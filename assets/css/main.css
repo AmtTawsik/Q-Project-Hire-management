@@ -1,0 +1,48 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.router-link-exact-active {
+  @apply bg-yellow-300 text-gray-800 hover:text-white;
+}
+
+
+.main-container {
+  height: calc(100vh - 4.25rem);
+  width: calc(100% - 4.4rem);
+}
+
+.taskmenu {
+  height: calc(100vh - 4.25rem);
+}
+
+.candidate-tbody:before {
+  /* This doesn't work because of border-collapse */
+  line-height: 2em;
+  content: '.';
+  color: white; /* bacground color */
+  display: block;
+
+  @apply text-slate-200;
+}
+
+@media not all and (min-width: 1280px) {
+  .main-container {
+    height: calc(100vh - 3.75rem);
+    width: calc(100% - 3rem);
+  }
+
+  .taskmenu {
+    height: calc(100vh - 3.75rem);
+  }
+
+  .candidate-tbody:before {
+    line-height: 1.5em;
+  }
+}
+
+@media not all and (min-width: 1024px) {
+  .main-container {
+    width: 100%;
+  }
+}
