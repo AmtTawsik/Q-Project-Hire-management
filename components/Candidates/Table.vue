@@ -106,10 +106,6 @@ const DUMMY_DATA = [
 
 const { tableTdVisible } = defineProps(['tableTdVisible']);
 
-watchEffect(() => {
-  console.log(tableTdVisible);
-});
-
 onMounted(() => {
   // setup available elements
   const $buttonElement = document.querySelectorAll('#button-open');

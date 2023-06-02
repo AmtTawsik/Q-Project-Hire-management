@@ -31,19 +31,9 @@ onMounted(() => {
     offsetSkidding: 0,
     offsetDistance: 10,
     delay: 300,
-    // onHide: () => {
-    //   console.log('dropdown has been hidden');
-    // },
-    // onShow: () => {
-    //   console.log('dropdown has been shown');
-    // },
-    // onToggle: () => {
-    //   console.log('dropdown has been toggled');
-    // },
   };
 
   const dropdown = new Dropdown($targetEl, $triggerEl, options);
-  // console.log(dropdown);
 });
 
 const tableTdVisible = ref({
@@ -54,15 +44,21 @@ const tableTdVisible = ref({
   isOwnerVisible: true,
 });
 
-// watchEffect(() => {
-//   console.log(
-//     tableTdVisible.value.isRatingVisible,
-//     tableTdVisible.value.isStagesVisible,
-//     tableTdVisible.value.isTeamVisible,
-//     tableTdVisible.value.isDateVisible,
-//     tableTdVisible.value.isOwnerVisible
-//   );
-// });
+const showAllTableTd = () => {
+  tableTdVisible.value.isRatingVisible = true;
+  tableTdVisible.value.isStagesVisible = true;
+  tableTdVisible.value.isTeamVisible = true;
+  tableTdVisible.value.isDateVisible = true;
+  tableTdVisible.value.isOwnerVisible = true;
+};
+
+const hideAllTableTd = () => {
+  tableTdVisible.value.isRatingVisible = false;
+  tableTdVisible.value.isStagesVisible = false;
+  tableTdVisible.value.isTeamVisible = false;
+  tableTdVisible.value.isDateVisible = false;
+  tableTdVisible.value.isOwnerVisible = false;
+};
 </script>
 
 <template>
@@ -97,10 +93,10 @@ const tableTdVisible = ref({
           <!-- Dropdown menu -->
           <div
             id="dropdownMenu"
-            class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-72 dark:bg-gray-700 dark:divide-gray-600"
+            class="z-10 hidden bg-white divide-y divide-gray-100 rounded-md shadow dark:bg-gray-700 dark:divide-gray-600"
           >
             <ul
-              class="p-3 space-y-1 text-sm text-gray-700 dark:text-gray-200"
+              class="pl-2 py-2 pr-3 space-y-1 text-sm text-gray-700 dark:text-gray-200"
               aria-labelledby="dropdownButton"
             >
               <li>
@@ -116,10 +112,10 @@ const tableTdVisible = ref({
                       class="sr-only peer"
                     />
                     <div
-                      class="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-600 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-500 peer-checked:bg-blue-600"
+                      class="w-9 h-5 bg-gray-200 peer-focus:outline-none dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-600 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-500 peer-checked:bg-green-400"
                     ></div>
                     <span
-                      class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300"
+                      class="ml-3 text-sm font-normal text-gray-900 dark:text-gray-300"
                     >
                       Rating</span
                     >
@@ -139,10 +135,10 @@ const tableTdVisible = ref({
                       class="sr-only peer"
                     />
                     <div
-                      class="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-600 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-500 peer-checked:bg-blue-600"
+                      class="w-9 h-5 bg-gray-200 peer-focus:outline-none dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-600 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-500 peer-checked:bg-green-400"
                     ></div>
                     <span
-                      class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300"
+                      class="ml-3 text-sm font-normal text-gray-900 dark:text-gray-300"
                     >
                       Stages</span
                     >
@@ -162,10 +158,10 @@ const tableTdVisible = ref({
                       class="sr-only peer"
                     />
                     <div
-                      class="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-600 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-500 peer-checked:bg-blue-600"
+                      class="w-9 h-5 bg-gray-200 peer-focus:outline-none dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-600 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-500 peer-checked:bg-green-400"
                     ></div>
                     <span
-                      class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300"
+                      class="ml-3 text-sm font-normal text-gray-900 dark:text-gray-300"
                     >
                       Team</span
                     >
@@ -185,10 +181,10 @@ const tableTdVisible = ref({
                       class="sr-only peer"
                     />
                     <div
-                      class="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-600 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-500 peer-checked:bg-blue-600"
+                      class="w-9 h-5 bg-gray-200 peer-focus:outline-none dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-600 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-500 peer-checked:bg-green-400"
                     ></div>
                     <span
-                      class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300"
+                      class="ml-3 text-sm font-normal text-gray-900 dark:text-gray-300"
                     >
                       Applied Date
                     </span>
@@ -208,10 +204,10 @@ const tableTdVisible = ref({
                       class="sr-only peer"
                     />
                     <div
-                      class="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-600 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-500 peer-checked:bg-blue-600"
+                      class="w-9 h-5 bg-gray-200 peer-focus:outline-none dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-600 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-500 peer-checked:bg-green-400"
                     ></div>
                     <span
-                      class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300"
+                      class="ml-3 text-sm font-normal text-gray-900 dark:text-gray-300"
                     >
                       Owner</span
                     >
@@ -219,6 +215,22 @@ const tableTdVisible = ref({
                 </div>
               </li>
             </ul>
+            <div
+              class="flex gap-1 justify-between text-gray-600 px-2 py-3 text-xs"
+            >
+              <button
+                @click="hideAllTableTd"
+                class="bg-gray-100 px-3 py-1 rounded-sm hover:bg-gray-200"
+              >
+                Hide All
+              </button>
+              <button
+                @click="showAllTableTd"
+                class="bg-gray-100 px-3 py-1 rounded-sm hover:bg-gray-200"
+              >
+                Show All
+              </button>
+            </div>
           </div>
         </div>
 
