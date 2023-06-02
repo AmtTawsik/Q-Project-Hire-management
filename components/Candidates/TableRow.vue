@@ -29,7 +29,7 @@ const {
 
 <template>
   <tr class="text-base bg-gray-50 border-b max-xl:text-sm">
-    <td class="w-4 p-4 rounded-tl-md">
+    <td class="w-4 p-4 rounded-tl-md" scope="row">
       <div class="flex items-center">
         <input
           id="checkbox-table-search-1"
@@ -52,7 +52,7 @@ const {
 
       <p class="pl-3 truncate">{{ candidate.name }}</p>
     </td>
-    <td v-if="tableTdVisible.isRatingVisible" class="px-3 py-4">
+    <td v-if="tableTdVisible.isRatingVisible" scope="row" class="px-3 py-4">
       <button
         class="flex items-center gap-1 border px-2 py-[.05rem] rounded-full"
       >
@@ -69,7 +69,7 @@ const {
         >
       </button>
     </td>
-    <td v-if="tableTdVisible.isStagesVisible" class="px-3 py-4">
+    <td v-if="tableTdVisible.isStagesVisible" scope="row" class="px-3 py-4">
       <div>
         <div class="flex items-center">
           <button class="flex items-center gap-1">
@@ -98,19 +98,19 @@ const {
       </div>
     </td>
 
-    <td v-if="tableTdVisible.isTeamVisible" class="px-3 py-4">
+    <td v-if="tableTdVisible.isTeamVisible" scope="row" class="px-3 py-4">
       <p class="text-black truncate">{{ team.self }}</p>
       <p class="text-sm">{{ team.team }}</p>
     </td>
 
-    <td v-if="tableTdVisible.isDateVisible" class="px-3 py-4">
+    <td v-if="tableTdVisible.isDateVisible" scope="row" class="px-3 py-4">
       <div class="text-black">{{ appliedDate }}</div>
     </td>
 
     <td
       v-if="tableTdVisible.isOwnerVisible"
       scope="row"
-      class="flex items-center px-3 py-5 text-gray-900 whitespace-nowrap"
+      class="flex items-center px-3 py-5 text-gray-900"
     >
       <img class="w-10 h-10 rounded-full" :src="owner.image" alt="Jese image" />
 
