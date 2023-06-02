@@ -9,36 +9,6 @@ import p5 from '@/assets/images/pp-5.jpg';
 
 import { Drawer } from 'flowbite';
 
-onMounted(() => {
-  // setup available elements
-  const $buttonElement = document.querySelectorAll('#button-open');
-  const $drawerElement = document.querySelector('#drawer-right');
-  const $closeButton = document.querySelector('#close-button');
-
-  // set modal options
-
-  const drawerOptions = {
-    placement: 'right',
-    backdrop: true,
-    bodyScrolling: false,
-    edge: false,
-    edgeOffset: '',
-    backdropClasses:
-      'bg-gray-900 bg-opacity-50 dark:bg-opacity-80 fixed inset-0 z-30',
-  };
-
-  // create a new modal instance
-  if ($drawerElement) {
-    const drawer = new Drawer($drawerElement, drawerOptions);
-
-    // set event listeners for the button to show the drawer
-    $buttonElement.forEach((el) => {
-      el.addEventListener('click', () => drawer.toggle());
-    });
-    // $closeButton.addEventListener('click', () => drawer.hide());
-  }
-});
-
 const DUMMY_DATA = [
   {
     id: 1,
@@ -134,19 +104,45 @@ const DUMMY_DATA = [
   },
 ];
 
-const cDetails = ref({});
-const { currentCandidate, setCandidate } = useCandidate();
-const handleClick = (item) => {
-  // setCandidate(item);
-  setCandidate({ ...item });
-};
+const { tableTdVisible } = defineProps(['tableTdVisible']);
 
-// watchEffect(() => {
-//   console.log(cDetails.value);
-// });
+watchEffect(() => {
+  console.log(tableTdVisible);
+});
+
+onMounted(() => {
+  // setup available elements
+  const $buttonElement = document.querySelectorAll('#button-open');
+  const $drawerElement = document.querySelector('#drawer-right');
+  const $closeButton = document.querySelector('#close-button');
+
+  // set modal options
+
+  const drawerOptions = {
+    placement: 'right',
+    backdrop: true,
+    bodyScrolling: false,
+    edge: false,
+    edgeOffset: '',
+    backdropClasses:
+      'bg-gray-900 bg-opacity-50 dark:bg-opacity-80 fixed inset-0 z-30',
+  };
+
+  // create a new modal instance
+  if ($drawerElement) {
+    const drawer = new Drawer($drawerElement, drawerOptions);
+
+    // set event listeners for the button to show the drawer
+    $buttonElement.forEach((el) => {
+      el.addEventListener('click', () => drawer.toggle());
+    });
+    // $closeButton.addEventListener('click', () => drawer.hide());
+  }
+});
 </script>
 <template>
-  <CandidatesDetails :data="cDetails" />
+  <CandidatesDetails />
+
   <div class="relative overflow-x-auto rounded-md">
     <table
       class="w-full text-sm text-left text-gray-500 dark:text-gray-400 border-collapse"
@@ -169,33 +165,45 @@ const handleClick = (item) => {
               <ChevronUpDownIcon class="w-4 h-4" />
             </div>
           </th>
-          <th scope="col" class="px-3 py-3">
+          <th
+            v-if="tableTdVisible.isRatingVisible"
+            scope="col"
+            class="px-3 py-3"
+          >
             <div class="flex items-center gap-1">
               <span>Rating</span>
               <ChevronUpDownIcon class="w-4 h-4" />
             </div>
           </th>
-          <th scope="col" class="px-3 py-3">
+          <th
+            v-if="tableTdVisible.isStagesVisible"
+            scope="col"
+            class="px-3 py-3"
+          >
             <div class="flex items-center gap-1">
               <span>Stages</span>
               <ChevronUpDownIcon class="w-4 h-4" />
             </div>
           </th>
 
-          <th scope="col" class="px-3 py-3">
+          <th v-if="tableTdVisible.isTeamVisible" scope="col" class="px-3 py-3">
             <div class="flex items-center gap-1">
               <span>Team</span>
               <ChevronUpDownIcon class="w-4 h-4" />
             </div>
           </th>
-          <th scope="col" class="px-3 py-3">
+          <th v-if="tableTdVisible.isDateVisible" scope="col" class="px-3 py-3">
             <div class="flex items-center gap-1">
               <span>Applied date</span>
               <ChevronUpDownIcon class="w-4 h-4" />
             </div>
           </th>
 
-          <th scope="col" class="px-3 py-3">
+          <th
+            v-if="tableTdVisible.isOwnerVisible"
+            scope="col"
+            class="px-3 py-3"
+          >
             <div class="flex items-center gap-1">
               <span>Owner</span>
               <ChevronUpDownIcon class="w-4 h-4" />
@@ -218,7 +226,7 @@ const handleClick = (item) => {
           :team="data.team"
           :appliedDate="data.appliedDate"
           :owner="data.owner"
-          :handleClick="handleClick"
+          :tableTdVisible="tableTdVisible"
         />
       </tbody>
     </table>

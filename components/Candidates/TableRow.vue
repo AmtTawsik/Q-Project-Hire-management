@@ -6,7 +6,16 @@ import {
 } from '@heroicons/vue/24/solid';
 import { StarIcon } from '@heroicons/vue/24/outline';
 
-const item = defineProps([
+const {
+  id,
+  candidate,
+  rating,
+  stages,
+  team,
+  appliedDate,
+  owner,
+  tableTdVisible,
+} = defineProps([
   'id',
   'candidate',
   'rating',
@@ -14,10 +23,8 @@ const item = defineProps([
   'team',
   'appliedDate',
   'owner',
-  'handleClick',
+  'tableTdVisible',
 ]);
-const { id, candidate, rating, stages, team, appliedDate, owner, handleClick } =
-  item;
 </script>
 
 <template>
@@ -34,7 +41,6 @@ const { id, candidate, rating, stages, team, appliedDate, owner, handleClick } =
     </td>
     <td
       id="button-open"
-      @click="handleClick(item)"
       scope="row"
       class="flex items-center px-3 py-5 text-gray-900 cursor-pointer"
     >
@@ -46,7 +52,7 @@ const { id, candidate, rating, stages, team, appliedDate, owner, handleClick } =
 
       <p class="pl-3 truncate">{{ candidate.name }}</p>
     </td>
-    <td class="px-3 py-4">
+    <td v-if="tableTdVisible.isRatingVisible" class="px-3 py-4">
       <button
         class="flex items-center gap-1 border px-2 py-[.05rem] rounded-full"
       >
@@ -63,7 +69,7 @@ const { id, candidate, rating, stages, team, appliedDate, owner, handleClick } =
         >
       </button>
     </td>
-    <td class="px-3 py-4">
+    <td v-if="tableTdVisible.isStagesVisible" class="px-3 py-4">
       <div>
         <div class="flex items-center">
           <button class="flex items-center gap-1">
@@ -92,16 +98,17 @@ const { id, candidate, rating, stages, team, appliedDate, owner, handleClick } =
       </div>
     </td>
 
-    <td class="px-3 py-4">
+    <td v-if="tableTdVisible.isTeamVisible" class="px-3 py-4">
       <p class="text-black truncate">{{ team.self }}</p>
       <p class="text-sm">{{ team.team }}</p>
     </td>
 
-    <td class="px-3 py-4">
+    <td v-if="tableTdVisible.isDateVisible" class="px-3 py-4">
       <div class="text-black">{{ appliedDate }}</div>
     </td>
 
     <td
+      v-if="tableTdVisible.isOwnerVisible"
       scope="row"
       class="flex items-center px-3 py-5 text-gray-900 whitespace-nowrap"
     >
