@@ -19,21 +19,28 @@ import { Dropdown } from 'flowbite';
 
 onMounted(() => {
   // set the dropdown menu element
-  const $targetEl = document.getElementById('dropdownMenu');
+  const $targetElFilter = document.getElementById('filterDropDownMenu');
+  const $targetElHide = document.getElementById('hideDropdownMenu');
 
   // set the element that trigger the dropdown menu on click
-  const $triggerEl = document.getElementById('dropdownButton');
+  const $triggerElFilter = document.getElementById('filterDropDownBtn');
+  const $triggerElHide = document.getElementById('hideDropdownBtn');
 
   // options with default values
   const options = {
-    placement: 'bottom',
+    placement: 'right',
     triggerType: 'click',
     offsetSkidding: 0,
     offsetDistance: 10,
     delay: 300,
   };
 
-  const dropdown = new Dropdown($targetEl, $triggerEl, options);
+  const filterDropdown = new Dropdown(
+    $targetElFilter,
+    $triggerElFilter,
+    options
+  );
+  const hideDropdown = new Dropdown($targetElHide, $triggerElHide, options);
 });
 
 const tableTdVisible = ref({
@@ -72,8 +79,11 @@ const hideAllTableTd = () => {
             56 Candidates
           </h3>
 
+          <!-- FILTER Dropdown -->
           <button
-            class="flex items-center gap-1 border bg-white border-gray-300 px-5 py-2 text-gray-500 rounded-md max-xl:px-4 max-sm:p-2"
+            id="filterDropDownBtn"
+            data-dropdown-toggle="filterDropDownMenu"
+            class="flex items-center gap-1 border bg-white border-gray-300 px-5 py-2 text-gray-500 hover:bg-gray-400 hover:text-white rounded-md max-xl:px-4 max-sm:p-2"
           >
             <FunnelIcon
               class="w-6 h-6 max-xl:w-5 max-xl:h-5 max-sm:w-6 max-sm:h-6"
@@ -81,23 +91,76 @@ const hideAllTableTd = () => {
             <span class="text-base max-xl:text-sm max-sm:hidden">Filter</span>
           </button>
 
+          <!--FILTER Dropdown menu -->
+          <div
+            id="filterDropDownMenu"
+            class="z-10 hidden bg-white divide-y divide-gray-100"
+          >
+            <ul
+              class="px-3 py-4 text-sm text-gray-700 flex items-center gap-1 shadow-md rounded-md"
+              aria-labelledby="filterDropDownBtn"
+            >
+              <li class="mr-1">
+                <p>Where</p>
+              </li>
+              <li>
+                <select
+                  id="candidate"
+                  class="bg-gray-50 border border-gray-300 text-gray-800 text-sm focus:ring-green-400 focus:border-transparent rounded-md block w-full px-2 py-1"
+                >
+                  <option value="name" selected>Rating</option>
+                  <option value="Stages">Stages</option>
+                  <option value="team">Team</option>
+                  <option value="date">Date</option>
+                  <option value="owner">Owner</option>
+                </select>
+              </li>
+              <li>
+                <select
+                  id="filter"
+                  class="bg-gray-50 border border-gray-300 text-gray-800 text-sm focus:ring-green-400 focus:border-transparent rounded-md block w-full px-2 py-1"
+                >
+                  <option selected value="is">is</option>
+                  <option value="is not">is not</option>
+                </select>
+              </li>
+              <li>
+                <input
+                  type="text"
+                  id="first_name"
+                  class="bg-gray-50 border border-gray-300 text-gray-800 text-sm focus:ring-green-400 focus:border-transparent rounded-md block w-full px-2 py-1"
+                  placeholder="John"
+                  required
+                />
+              </li>
+              <li>
+                <button
+                  class="px-2 py-1 bg-gray-100 hover:bg-gray-200 border border-gray-300 hover:border-green-400 rounded-md text-sm text-gray-600"
+                >
+                  Filter
+                </button>
+              </li>
+            </ul>
+          </div>
+
+          <!-- HIDE Dropdown -->
           <button
-            id="dropdownButton"
-            data-dropdown-toggle="dropdownMenu"
+            id="hideDropdownBtn"
+            data-dropdown-toggle="hideDropdownMenu"
             class="focus:outline-none text-gray-600 font-medium rounded-lg text-sm px-3 py-2.5 text-center inline-flex items-center border border-gray-300 hover:bg-gray-400 hover:text-white ml-4"
             type="button"
           >
             <EyeIcon class="w-5 h-5" />
           </button>
 
-          <!-- Dropdown menu -->
+          <!-- HIDE Dropdown menu -->
           <div
-            id="dropdownMenu"
+            id="hideDropdownMenu"
             class="z-10 hidden bg-white divide-y divide-gray-100 rounded-md shadow dark:bg-gray-700 dark:divide-gray-600"
           >
             <ul
               class="pl-2 py-2 pr-3 space-y-1 text-sm text-gray-700 dark:text-gray-200"
-              aria-labelledby="dropdownButton"
+              aria-labelledby="hideDropdownBtn"
             >
               <li>
                 <div
