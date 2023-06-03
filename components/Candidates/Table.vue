@@ -1,5 +1,5 @@
 <script setup>
-import { useCandidate } from '~/composables/useCandidate';
+import { useCandidate } from '~/composables/candidate.js';
 import { ChevronUpDownIcon } from '@heroicons/vue/24/solid';
 import p1 from '@/assets/images/pp-1.jpg';
 import p2 from '@/assets/images/pp-2.jpg';
@@ -104,7 +104,7 @@ const DUMMY_DATA = [
   },
 ];
 
-const { tableTdVisible } = defineProps(['tableTdVisible']);
+const { tableTdVisible } = useHideDropDown();
 
 onMounted(() => {
   // setup available elements
@@ -222,7 +222,6 @@ onMounted(() => {
           :team="data.team"
           :appliedDate="data.appliedDate"
           :owner="data.owner"
-          :tableTdVisible="tableTdVisible"
         />
       </tbody>
     </table>

@@ -1,6 +1,6 @@
 <script setup>
 import { Tabs, initTabs } from 'flowbite';
-import { useCandidate } from '~/composables/useCandidate';
+import { useCandidate } from '~/composables/candidate.js';
 
 import {
   ChevronDownIcon,

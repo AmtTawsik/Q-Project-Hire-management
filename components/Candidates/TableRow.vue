@@ -6,25 +6,9 @@ import {
 } from '@heroicons/vue/24/solid';
 import { StarIcon } from '@heroicons/vue/24/outline';
 
-const {
-  id,
-  candidate,
-  rating,
-  stages,
-  team,
-  appliedDate,
-  owner,
-  tableTdVisible,
-} = defineProps([
-  'id',
-  'candidate',
-  'rating',
-  'stages',
-  'team',
-  'appliedDate',
-  'owner',
-  'tableTdVisible',
-]);
+const { id, candidate, rating, stages, team, appliedDate, owner } = defineProps(
+  ['id', 'candidate', 'rating', 'stages', 'team', 'appliedDate', 'owner']
+);
 
 const rowData = {
   id,
@@ -37,6 +21,7 @@ const rowData = {
 };
 
 const { currCandidate, getCurrentCandInfo } = useCandidate();
+const { tableTdVisible } = useHideDropDown();
 
 const detailsHandler = (rowData) => {
   getCurrentCandInfo(rowData);
