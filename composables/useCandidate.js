@@ -1,9 +1,9 @@
-const currentCandidate = ref({});
-const setCandidate = (obj) => {
-  currentCandidate.value = obj;
-  // console.log(currentCandidate.value);
-};
-
 export const useCandidate = () => {
-  return { currentCandidate, setCandidate };
+  const currCandidate = useState('candidate', () => {});
+
+  const getCurrentCandInfo = (info) => {
+    currCandidate.value = info;
+  };
+
+  return { currCandidate, getCurrentCandInfo };
 };

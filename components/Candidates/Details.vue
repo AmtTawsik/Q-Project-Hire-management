@@ -9,6 +9,7 @@ import {
   StarIcon as SolidStartIcon,
   ArrowDownTrayIcon,
   PlusCircleIcon,
+  StarIcon,
 } from '@heroicons/vue/24/solid';
 import {
   ChatBubbleBottomCenterTextIcon,
@@ -22,6 +23,7 @@ import {
 } from '@heroicons/vue/24/outline';
 
 const { data } = defineProps(['data']);
+const { currCandidate } = useCandidate();
 
 onMounted(() => {
   initTabs();
@@ -41,22 +43,33 @@ onMounted(() => {
           <div class="relative">
             <img
               class="w-14 h-14 rounded-full"
-              src="@/assets/images/pp-1.jpg"
+              :src="currCandidate?.candidate.image"
               alt=""
             />
 
             <button
               class="flex items-center gap-1 shadow-md bg-white px-1 rounded-full absolute bottom-[.01rem]"
             >
-              <SolidStartIcon class="w-3 h-3 text-yellow-300" />
-              <span class="text-xs">4.0</span>
+              <SolidStartIcon
+                v-if="currCandidate?.rating > 0"
+                class="w-3 h-3 text-yellow-300"
+              />
+              <StarIcon v-else class="w-3 h-3 text-gray-300" />
+              <span
+                :class="`text-xs ${
+                  currCandidate?.rating > 0 ? 'text-black' : 'text-gray-600'
+                }`"
+                >{{ currCandidate?.rating }}.0</span
+              >
               <ChevronDownIcon class="w-3 h-3" />
             </button>
           </div>
 
           <div>
             <div class="flex items-center gap-2">
-              <h3 class="font-medium text-lg max-xl:text-base">Cody Fisher</h3>
+              <h3 class="font-medium text-lg max-xl:text-base">
+                {{ currCandidate?.candidate.name }}
+              </h3>
               <span
                 class="bg-green-100 border rounded-md border-green-400 text-green-600 text-sm px-2 max-xl:text-xs"
                 >Active</span
@@ -64,35 +77,20 @@ onMounted(() => {
             </div>
 
             <p class="text-sm text-slate-500 mb-2 max-lg:text-xs">
-              Design Team - UI Designer
+              {{ currCandidate?.team.team }} - {{ currCandidate?.team.self }}
             </p>
             <div class="flex gap-1 items-center">
               <div
-                class="bg-orange-400 w-7 flex items-center justify-center text-sm text-white font-medium rounded-sm max-lg:w-6 max-lg:text-xs"
+                v-for="n in currCandidate?.stages.value"
+                :key="n"
+                :class="`${currCandidate?.stages.color}  w-7 flex items-center justify-center text-sm text-white font-medium rounded-sm max-lg:w-6 max-lg:text-xs`"
               >
-                1
+                {{ n }}
               </div>
               <div
-                class="bg-orange-400 w-7 flex items-center justify-center text-sm text-white font-medium rounded-sm max-lg:w-6 max-lg:text-xs"
-              >
-                2
-              </div>
-              <div
-                class="bg-gray-400 w-7 flex items-center justify-center text-sm text-white font-medium rounded-sm max-lg:w-6 max-lg:text-xs"
-              >
-                &nbsp;
-              </div>
-              <div
-                class="bg-gray-400 w-7 flex items-center justify-center text-sm text-white font-medium rounded-sm max-lg:w-6 max-lg:text-xs"
-              >
-                &nbsp;
-              </div>
-              <div
-                class="bg-gray-400 w-7 flex items-center justify-center text-sm text-white font-medium rounded-sm max-lg:w-6 max-lg:text-xs"
-              >
-                &nbsp;
-              </div>
-              <div
+                v-if="currCandidate?.stages"
+                v-for="n in 6 - currCandidate.stages.value"
+                :key="n"
                 class="bg-gray-400 w-7 flex items-center justify-center text-sm text-white font-medium rounded-sm max-lg:w-6 max-lg:text-xs"
               >
                 &nbsp;
