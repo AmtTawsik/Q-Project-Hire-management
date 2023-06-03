@@ -35,12 +35,18 @@ onMounted(() => {
     delay: 300,
   };
 
+  const hideDropdownOptions = { ...options, placement: 'bottom' };
+
   const filterDropdown = new Dropdown(
     $targetElFilter,
     $triggerElFilter,
     options
   );
-  const hideDropdown = new Dropdown($targetElHide, $triggerElHide, options);
+  const hideDropdown = new Dropdown(
+    $targetElHide,
+    $triggerElHide,
+    hideDropdownOptions
+  );
 });
 
 const tableTdVisible = ref({
