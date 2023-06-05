@@ -41,16 +41,16 @@
 
             <div class="col-span-10 mx-3 mt-5 sm:col-span-5 sm:mx-0" id="myTabContent">
                 <div id="Details" role="tabpanel" aria-labelledby="Details-tab">
-                    <Details />
+                    <JobDetails />
                 </div>
                 <div id="Application" role="tabpanel" aria-labelledby="Application-tab">
-                    <Application />
+                    <JobApplication />
                 </div>
                 <div id="Score" role="tabpanel" aria-labelledby="Score-tab">
-                    <Score />
+                    <JobScore />
                 </div>
                 <div id="Hiring" role="tabpanel" aria-labelledby="Hiring-tab">
-                    <Hiring />
+                    <JobHiring />
                 </div>
             </div>
         </div>

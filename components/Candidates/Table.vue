@@ -1,10 +1,20 @@
 <script setup>
 import { useCandidate } from '~/composables/candidate.js';
 import { ChevronUpDownIcon } from '@heroicons/vue/24/solid';
-
+import draggable from 'vuedraggable'
 import { Drawer } from 'flowbite';
 
-const { DUMMY_DATA } = useTableData();
+const headers = ref(['Rating', 'Stages', 'Team', 'Applied Date', 'Owner'])
+
+const headMap=new Map([
+  ['Rating' ,'isRatingVisible'],
+  ['Stages','isStagesVisible'],
+  ['Team','isTeamVisible'],
+  ['Applied Date','isDateVisible'],
+  ['Owner','isOwnerVisible']
+])
+
+const {DUMMY_DATA} = useTableData()
 
 const { tableTdVisible } = useHideDropDown();
 
@@ -42,90 +52,46 @@ onMounted(() => {
   <CandidatesDetails />
 
   <div class="relative overflow-x-auto rounded-md">
-    <table
-      class="w-full text-sm text-left text-gray-500 dark:text-gray-400 border-collapse"
-    >
+    <table class="w-full text-sm text-left text-gray-500 border-collapse dark:text-gray-400">
       <thead class="text-sm text-gray-800 bg-white shadow-sm">
-        <tr>
-          <th scope="col" class="p-4 rounded-l-md">
-            <div class="flex items-center">
-              <input
-                id="checkbox-all-search"
-                type="checkbox"
-                class="w-5 h-5 text-green-400 bg-gray-100 border-gray-300 focus:ring-white focus:ring-0"
-              />
-              <label for="checkbox-all-search" class="sr-only">checkbox</label>
-            </div>
-          </th>
-          <th scope="col" class="px-3 py-3">
-            <div class="flex items-center gap-1">
-              <span>Candidate Name</span>
-              <ChevronUpDownIcon class="w-4 h-4" />
-            </div>
-          </th>
-          <th
-            v-if="tableTdVisible.isRatingVisible"
-            scope="col"
-            class="px-3 py-3"
-          >
-            <div class="flex items-center gap-1">
-              <span>Rating</span>
-              <ChevronUpDownIcon class="w-4 h-4" />
-            </div>
-          </th>
-          <th
-            v-if="tableTdVisible.isStagesVisible"
-            scope="col"
-            class="px-3 py-3"
-          >
-            <div class="flex items-center gap-1">
-              <span>Stages</span>
-              <ChevronUpDownIcon class="w-4 h-4" />
-            </div>
-          </th>
-
-          <th v-if="tableTdVisible.isTeamVisible" scope="col" class="px-3 py-3">
-            <div class="flex items-center gap-1">
-              <span>Team</span>
-              <ChevronUpDownIcon class="w-4 h-4" />
-            </div>
-          </th>
-          <th v-if="tableTdVisible.isDateVisible" scope="col" class="px-3 py-3">
-            <div class="flex items-center gap-1">
-              <span>Applied date</span>
-              <ChevronUpDownIcon class="w-4 h-4" />
-            </div>
-          </th>
-
-          <th
-            v-if="tableTdVisible.isOwnerVisible"
-            scope="col"
-            class="px-3 py-3"
-          >
-            <div class="flex items-center gap-1">
-              <span>Owner</span>
-              <ChevronUpDownIcon class="w-4 h-4" />
-            </div>
-          </th>
-
-          <th scope="col" class="px-3 py-3 rounded-r-md">
-            <div class="flex items-center gap-1">&nbsp;</div>
-          </th>
-        </tr>
+        <draggable v-model="headers" item-key="id" tag="tr">
+          <template #header>
+            <th  scope="col" class="p-4 rounded-l-md">
+              <div class="flex items-center">
+                <input id="checkbox-all-search" type="checkbox"
+                  class="w-5 h-5 text-green-400 bg-gray-100 border-gray-300 focus:ring-white focus:ring-0" />
+                <label for="checkbox-all-search" class="sr-only">checkbox</label>
+              </div>
+            </th>
+            <th scope="col" class="px-3 py-3">
+              <div class="flex items-center gap-1">
+                <span>Candidate Name</span>
+                <ChevronUpDownIcon class="w-4 h-4" />
+              </div>
+            </th>
+          </template>
+          <template #item="{ element: header }">
+            <th v-if="tableTdVisible[headMap.get(header)]" scope="col" class="px-3 py-3">
+              <div class="flex items-center gap-1">
+                <span>{{ header }}</span>
+                <ChevronUpDownIcon class="w-4 h-4" />
+              </div>
+            </th>
+          </template>
+          <template #footer>
+            <th scope="col" class="px-3 py-3 rounded-r-md">
+              <div class="flex items-center gap-1">&nbsp;</div>
+            </th>
+          </template>
+        </draggable>
       </thead>
       <tbody class="candidate-tbody">
-        <CandidatesTableRow
-          v-for="data in DUMMY_DATA"
-          :key="data.id"
-          :id="data.id"
-          :candidate="data.candidate"
-          :rating="data.rating"
-          :stages="data.stages"
-          :team="data.team"
-          :appliedDate="data.appliedDate"
-          :owner="data.owner"
-        />
+        <tr class="text-base border-b bg-gray-50 max-xl:text-sm" v-for="data in DUMMY_DATA">
+          <CandidatesTableRow :key="data.id" :id="data.id" :candidate="data.candidate" :rating="data.rating"
+            :stages="data.stages" :team="data.team" :appliedDate="data.appliedDate" :owner="data.owner" :headers="headers" />
+        </tr>
       </tbody>
     </table>
   </div>
 </template>
+data[header]
