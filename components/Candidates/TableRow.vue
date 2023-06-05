@@ -26,6 +26,13 @@ const { tableTdVisible } = useHideDropDown();
 const detailsHandler = (rowData) => {
   getCurrentCandInfo(rowData);
 };
+
+const getDateFormat = (date) => {
+  const month =
+    date.getMonth() < 10 ? `0${date.getMonth() + 1}` : `${date.getMonth() + 1}`;
+  const format = `${date.getDate()}/${month}/${date.getFullYear()}`;
+  return format;
+};
 </script>
 
 <template>
@@ -103,7 +110,7 @@ const detailsHandler = (rowData) => {
     </td>
 
     <td v-if="tableTdVisible.isDateVisible" scope="row" class="px-3 py-4">
-      <div class="text-black">{{ appliedDate }}</div>
+      <div class="text-black">{{ getDateFormat(appliedDate) }}</div>
     </td>
 
     <td v-if="tableTdVisible.isOwnerVisible" scope="row" class="px-3 py-5">

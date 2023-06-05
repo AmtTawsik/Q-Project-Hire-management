@@ -23,7 +23,7 @@ export const useTableData = () => {
         team: 'Design Team',
       },
 
-      appliedDate: '01/03/2021',
+      appliedDate: new Date('2022-02-15'),
       owner: {
         name: 'Kristin Watson',
         image: p2,
@@ -46,7 +46,7 @@ export const useTableData = () => {
         team: 'Design Team',
       },
 
-      appliedDate: '13/03/2021',
+      appliedDate: new Date('2023-1-12'),
       owner: {
         name: 'Albert Flores',
         image: p4,
@@ -69,7 +69,7 @@ export const useTableData = () => {
         team: 'Design Team',
       },
 
-      appliedDate: '28/08/2021',
+      appliedDate: new Date('2022-12-15'),
       owner: {
         name: 'Dianne Russell',
         image: p5,
@@ -92,7 +92,7 @@ export const useTableData = () => {
         team: 'Design Team',
       },
 
-      appliedDate: '22/06/2021',
+      appliedDate: new Date('2023-2-15'),
       owner: {
         name: 'Kristin Watson',
         image: p2,
@@ -109,13 +109,38 @@ export const useTableData = () => {
       a.candidate.name.localeCompare(b.candidate.name)
     );
   };
+
   const sortByNameZtoA = () => {
     DUMMY_DATA.value.sort((a, b) =>
       b.candidate.name.localeCompare(a.candidate.name)
     );
   };
 
-  return { DUMMY_DATA, sortByNameAtoZ, sortByNameZtoA };
+  const sortByRating1to5 = () => {
+    DUMMY_DATA.value.sort((a, b) => a.rating - b.rating);
+  };
+
+  const sortByRating5to1 = () => {
+    DUMMY_DATA.value.sort((a, b) => b.rating - a.rating);
+  };
+
+  const sortByDate1to12 = () => {
+    DUMMY_DATA.value.sort((a, b) => a.appliedDate - b.appliedDate);
+  };
+
+  const sortByDate12to1 = () => {
+    DUMMY_DATA.value.sort((a, b) => b.appliedDate - a.appliedDate);
+  };
+
+  return {
+    DUMMY_DATA,
+    sortByNameAtoZ,
+    sortByNameZtoA,
+    sortByRating1to5,
+    sortByRating5to1,
+    sortByDate1to12,
+    sortByDate12to1,
+  };
 };
 
 export const useCandidate = () => {

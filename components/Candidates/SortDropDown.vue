@@ -20,14 +20,40 @@ onMounted(() => {
   const sortDropDown = new Dropdown($targetElHide, $triggerElHide, options);
 });
 
-const { sortByNameAtoZ, sortByNameZtoA } = useTableData();
-const field = ref('AtoZ');
+const {
+  sortByNameAtoZ,
+  sortByNameZtoA,
+  sortByRating1to5,
+  sortByRating5to1,
+  sortByDate1to12,
+  sortByDate12to1,
+} = useTableData();
 
-watchEffect(() => {
-  if (field.value === 'AtoZ') {
+const name = ref('nameAsc');
+const rating = ref('ratingAsc');
+const date = ref('dateAsc');
+
+watch(name, () => {
+  if (name.value === 'nameAsc') {
     sortByNameAtoZ();
-  } else if (field.value === 'ZtoA') {
+  } else if (name.value === 'nameDesc') {
     sortByNameZtoA();
+  }
+});
+
+watch(rating, () => {
+  if (rating.value === 'ratingAsc') {
+    sortByRating1to5();
+  } else if (rating.value === 'ratingDesc') {
+    sortByRating5to1();
+  }
+});
+
+watch(date, () => {
+  if (date.value === 'dateAsc') {
+    sortByDate1to12();
+  } else if (date.value === 'dateDesc') {
+    sortByDate12to1();
   }
 });
 </script>
@@ -53,20 +79,33 @@ watchEffect(() => {
       <li class="flex gap-2 items-center">
         <span class="w-full text-start py-2"> Name </span>
         <select
-          v-model="field"
+          v-model="name"
           class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-md focus:ring-gray-500 focus:border-gray-400 block w-full px-2 py-1"
         >
-          <option value="AtoZ" selected>A &rarr; Z</option>
-          <option value="ZtoA">Z &rarr; A</option>
+          <option value="nameAsc" selected>A &rarr; Z</option>
+          <option value="nameDesc">Z &rarr; A</option>
         </select>
       </li>
-      <!-- <li>
-        <button
-          class="w-full text-start px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+      <li class="flex gap-2 items-center">
+        <span class="w-full text-start py-2"> Rating </span>
+        <select
+          v-model="rating"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-md focus:ring-gray-500 focus:border-gray-400 block w-full px-2 py-1"
         >
-          Rating
-        </button>
-      </li> -->
+          <option value="ratingAsc" selected>1 &rarr; 9</option>
+          <option value="ratingDesc">9 &rarr; 1</option>
+        </select>
+      </li>
+      <li class="flex gap-2 items-center">
+        <span class="w-full text-start py-2"> Date </span>
+        <select
+          v-model="date"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-md focus:ring-gray-500 focus:border-gray-400 block w-full px-2 py-1"
+        >
+          <option value="dateAsc" selected>1 &rarr; 9</option>
+          <option value="dateDesc">9 &rarr; 1</option>
+        </select>
+      </li>
     </ul>
   </div>
 </template>
