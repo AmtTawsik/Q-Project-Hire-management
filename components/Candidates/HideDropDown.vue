@@ -56,11 +56,7 @@ onMounted(() => {
             <div
               class="w-9 h-5 bg-red-400 peer-focus:outline-none dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-600 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-500 peer-checked:bg-green-400"
             ></div>
-            <span
-              class="ml-3 text-sm font-normal text-gray-900 dark:text-gray-300"
-            >
-              Rating</span
-            >
+            <span class="ml-3 text-sm dark:text-gray-300"> Rating</span>
           </label>
         </div>
       </li>
@@ -77,11 +73,7 @@ onMounted(() => {
             <div
               class="w-9 h-5 bg-red-400 peer-focus:outline-none dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-600 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-500 peer-checked:bg-green-400"
             ></div>
-            <span
-              class="ml-3 text-sm font-normal text-gray-900 dark:text-gray-300"
-            >
-              Stages</span
-            >
+            <span class="ml-3 text-sm dark:text-gray-300"> Stages</span>
           </label>
         </div>
       </li>
@@ -98,11 +90,7 @@ onMounted(() => {
             <div
               class="w-9 h-5 bg-red-400 peer-focus:outline-none dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-600 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-500 peer-checked:bg-green-400"
             ></div>
-            <span
-              class="ml-3 text-sm font-normal text-gray-900 dark:text-gray-300"
-            >
-              Team</span
-            >
+            <span class="ml-3 text-sm dark:text-gray-300"> Team</span>
           </label>
         </div>
       </li>
@@ -119,11 +107,7 @@ onMounted(() => {
             <div
               class="w-9 h-5 bg-red-400 peer-focus:outline-none dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-600 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-500 peer-checked:bg-green-400"
             ></div>
-            <span
-              class="ml-3 text-sm font-normal text-gray-900 dark:text-gray-300"
-            >
-              Applied Date
-            </span>
+            <span class="ml-3 text-sm dark:text-gray-300"> Applied Date </span>
           </label>
         </div>
       </li>
@@ -140,11 +124,7 @@ onMounted(() => {
             <div
               class="w-9 h-5 bg-red-400 peer-focus:outline-none dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-600 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-500 peer-checked:bg-green-400"
             ></div>
-            <span
-              class="ml-3 text-sm font-normal text-gray-900 dark:text-gray-300"
-            >
-              Owner</span
-            >
+            <span class="ml-3 text-sm dark:text-gray-300"> Owner</span>
           </label>
         </div>
       </li>

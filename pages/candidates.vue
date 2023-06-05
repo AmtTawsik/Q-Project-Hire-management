@@ -25,10 +25,14 @@ import {
             56 Candidates
           </h3>
 
+          <!-- FILTER Dropdown -->
           <CandidatesFilterDropDown />
 
           <!-- HIDE Dropdown -->
           <CandidatesHideDropDown />
+
+          <!-- SORT Dropdown -->
+          <CandidatesSortDropDown />
         </div>
 
         <div class="flex items-center">
