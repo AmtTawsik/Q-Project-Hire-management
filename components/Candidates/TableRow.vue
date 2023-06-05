@@ -30,13 +30,6 @@ const { tableTdVisible } = useHideDropDown();
 const detailsHandler = (rowData) => {
   getCurrentCandInfo(rowData);
 };
-
-const getDateFormat = (date) => {
-  const month =
-    date.getMonth() < 10 ? `0${date.getMonth() + 1}` : `${date.getMonth() + 1}`;
-  const format = `${date.getDate()}/${month}/${date.getFullYear()}`;
-  return format;
-};
 </script>
 
 <template>
