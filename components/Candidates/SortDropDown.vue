@@ -19,6 +19,43 @@ onMounted(() => {
 
   const sortDropDown = new Dropdown($targetElHide, $triggerElHide, options);
 });
+
+const {
+  sortByNameAtoZ,
+  sortByNameZtoA,
+  sortByRating1to5,
+  sortByRating5to1,
+  sortByDate1to12,
+  sortByDate12to1,
+} = useTableData();
+
+const name = ref('nameAsc');
+const rating = ref('ratingAsc');
+const date = ref('dateAsc');
+
+watch(name, () => {
+  if (name.value === 'nameAsc') {
+    sortByNameAtoZ();
+  } else if (name.value === 'nameDesc') {
+    sortByNameZtoA();
+  }
+});
+
+watch(rating, () => {
+  if (rating.value === 'ratingAsc') {
+    sortByRating1to5();
+  } else if (rating.value === 'ratingDesc') {
+    sortByRating5to1();
+  }
+});
+
+watch(date, () => {
+  if (date.value === 'dateAsc') {
+    sortByDate1to12();
+  } else if (date.value === 'dateDesc') {
+    sortByDate12to1();
+  }
+});
 </script>
 
 <template>
@@ -36,26 +73,39 @@ onMounted(() => {
     class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 w-44"
   >
     <ul
-      class="py-2 text-sm text-gray-700 dark:text-gray-200 px-3"
+      class="px-3 py-2 text-sm text-gray-700 dark:text-gray-200"
       aria-labelledby="sortDropDownBtn"
     >
-      <li class="flex gap-2 items-center">
-        <span class="w-full text-start py-2"> Name </span>
+      <li class="flex items-center gap-2">
+        <span class="w-full py-2 text-start"> Name </span>
         <select
-          id="countries"
-          class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-md focus:ring-gray-500 focus:border-gray-500 block w-full px-2 py-1"
+          v-model="name"
+          class="block w-full px-2 py-1 text-xs text-gray-900 border border-gray-300 rounded-md bg-gray-50 focus:ring-gray-500 focus:border-gray-400"
         >
-          <option value="A to Z" selected>A &rarr; Z</option>
-          <option value="Z to A">Z &rarr; A</option>
+          <option value="nameAsc" selected>A &rarr; Z</option>
+          <option value="nameDesc">Z &rarr; A</option>
         </select>
       </li>
-      <!-- <li>
-        <button
-          class="w-full text-start px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+      <li class="flex items-center gap-2">
+        <span class="w-full py-2 text-start"> Rating </span>
+        <select
+          v-model="rating"
+          class="block w-full px-2 py-1 text-xs text-gray-900 border border-gray-300 rounded-md bg-gray-50 focus:ring-gray-500 focus:border-gray-400"
         >
-          Rating
-        </button>
-      </li> -->
+          <option value="ratingAsc" selected>1 &rarr; 9</option>
+          <option value="ratingDesc">9 &rarr; 1</option>
+        </select>
+      </li>
+      <li class="flex items-center gap-2">
+        <span class="w-full py-2 text-start"> Date </span>
+        <select
+          v-model="date"
+          class="block w-full px-2 py-1 text-xs text-gray-900 border border-gray-300 rounded-md bg-gray-50 focus:ring-gray-500 focus:border-gray-400"
+        >
+          <option value="dateAsc" selected>1 &rarr; 9</option>
+          <option value="dateDesc">9 &rarr; 1</option>
+        </select>
+      </li>
     </ul>
   </div>
 </template>
