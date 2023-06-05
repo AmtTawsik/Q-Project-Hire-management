@@ -1,11 +1,6 @@
 <script setup>
 import { useCandidate } from '~/composables/candidate.js';
 import { ChevronUpDownIcon } from '@heroicons/vue/24/solid';
-import p1 from '@/assets/images/pp-1.jpg';
-import p2 from '@/assets/images/pp-2.jpg';
-import p3 from '@/assets/images/pp-3.jpg';
-import p4 from '@/assets/images/pp-4.jpg';
-import p5 from '@/assets/images/pp-5.jpg';
 import draggable from 'vuedraggable'
 import { Drawer } from 'flowbite';
 

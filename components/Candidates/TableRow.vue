@@ -30,6 +30,13 @@ const { tableTdVisible } = useHideDropDown();
 const detailsHandler = (rowData) => {
   getCurrentCandInfo(rowData);
 };
+
+const getDateFormat = (date) => {
+  const month =
+    date.getMonth() < 10 ? `0${date.getMonth() + 1}` : `${date.getMonth() + 1}`;
+  const format = `${date.getDate()}/${month}/${date.getFullYear()}`;
+  return format;
+};
 </script>
 
 <template>
@@ -51,58 +58,6 @@ const detailsHandler = (rowData) => {
     <component :is="dataMap.get(header)?.component" :content="rowData[dataMap.get(header).property]"></component>
   </td>
 </template>
-<!-- <td v-if="tableTdVisible.isRatingVisible" scope="row">
-      <CandidatesTableDataRating :content="rating" />
-    </td>
-    <td v-if="tableTdVisible.isStagesVisible" scope="row" class="px-3 py-4">
-      <div>
-        <div class="flex items-center">
-          <button class="flex items-center gap-1">
-            <span class="text-black">{{ stages.state }}</span>
-            <ChevronDownIcon class="w-4 h-4 font-semibold text-black" />
-          </button>
-        </div>
-
-        <div v-if="stages.value <= 6" class="flex items-center gap-1 mt-1">
-          <div
-                v-for="n in stages.value"
-                :key="n"
-                :class="`${stages.color} w-7 flex items-center justify-center text-sm text-white font-medium rounded-sm`"
-              >
-                {{ n }}
-              </div>
-
-              <div
-                v-for="n in 6 - stages.value"
-                :key="n"
-                class="flex items-center justify-center text-sm font-medium text-white bg-gray-200 rounded-sm w-7"
-              >
-                &nbsp;
-              </div>
-            </div>
-          </div>
-        </td>
-
-        <td v-if="tableTdVisible.isTeamVisible" scope="row" class="px-3 py-4">
-          <p class="text-black truncate">{{ team.self }}</p>
-          <p class="text-sm">{{ team.team }}</p>
-        </td>
-
-        <td v-if="tableTdVisible.isDateVisible" scope="row" class="px-3 py-4">
-          <div class="text-black">{{ appliedDate }}</div>
-        </td>
-
-        <td v-if="tableTdVisible.isOwnerVisible" scope="row" class="px-3 py-5">
-          <div class="flex items-center text-gray-900">
-            <img
-              class="w-10 h-10 rounded-full"
-              :src="owner.image"
-              alt="Jese image"
-            />
-            <p class="pl-3 truncate">{{ owner.name }}</p>
-          </div>
-        </td> -->
-
   <td class="px-3 py-4 rounded-tr-md">
     <button>
       <EllipsisHorizontalIcon class="w-6 h-6" />
