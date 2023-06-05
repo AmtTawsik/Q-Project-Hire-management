@@ -19,6 +19,17 @@ onMounted(() => {
 
   const sortDropDown = new Dropdown($targetElHide, $triggerElHide, options);
 });
+
+const { sortByNameAtoZ, sortByNameZtoA } = useTableData();
+const field = ref('AtoZ');
+
+watchEffect(() => {
+  if (field.value === 'AtoZ') {
+    sortByNameAtoZ();
+  } else if (field.value === 'ZtoA') {
+    sortByNameZtoA();
+  }
+});
 </script>
 
 <template>
@@ -42,11 +53,11 @@ onMounted(() => {
       <li class="flex gap-2 items-center">
         <span class="w-full text-start py-2"> Name </span>
         <select
-          id="countries"
-          class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-md focus:ring-gray-500 focus:border-gray-500 block w-full px-2 py-1"
+          v-model="field"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-md focus:ring-gray-500 focus:border-gray-400 block w-full px-2 py-1"
         >
-          <option value="A to Z" selected>A &rarr; Z</option>
-          <option value="Z to A">Z &rarr; A</option>
+          <option value="AtoZ" selected>A &rarr; Z</option>
+          <option value="ZtoA">Z &rarr; A</option>
         </select>
       </li>
       <!-- <li>
