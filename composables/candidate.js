@@ -46,7 +46,7 @@ export const useTableData = () => {
         team: 'Design Team',
       },
 
-      appliedDate: new Date('2023-1-12'),
+      appliedDate: new Date('2023-01-12'),
       owner: {
         name: 'Albert Flores',
         image: p4,
@@ -92,7 +92,7 @@ export const useTableData = () => {
         team: 'Design Team',
       },
 
-      appliedDate: new Date('2023-2-15'),
+      appliedDate: new Date('2023-02-15'),
       owner: {
         name: 'Kristin Watson',
         image: p2,
@@ -174,6 +174,30 @@ export const useTableData = () => {
     }
   };
 
+  const filterDataByDate = (targetDate, operator) => {
+    if (operator === 'is') {
+      DUMMY_DATA.value = TABLE_DUMMY_DATA.filter(
+        (item) => item.appliedDate.getTime() === new Date(targetDate).getTime()
+      );
+    } else if (operator === 'is-before') {
+      DUMMY_DATA.value = TABLE_DUMMY_DATA.filter(
+        (item) => item.appliedDate.getTime() < new Date(targetDate).getTime()
+      );
+    } else if (operator === 'is-after') {
+      DUMMY_DATA.value = TABLE_DUMMY_DATA.filter(
+        (item) => item.appliedDate.getTime() > new Date(targetDate).getTime()
+      );
+    } else if (operator === 'is-on-before') {
+      DUMMY_DATA.value = TABLE_DUMMY_DATA.filter(
+        (item) => item.appliedDate.getTime() <= new Date(targetDate).getTime()
+      );
+    } else if (operator === 'is-on-after') {
+      DUMMY_DATA.value = TABLE_DUMMY_DATA.filter(
+        (item) => item.appliedDate.getTime() >= new Date(targetDate).getTime()
+      );
+    }
+  };
+
   const filterDataByOwner = (keyword, operator) => {
     if (operator === 'is') {
       DUMMY_DATA.value = TABLE_DUMMY_DATA.filter((item) =>
@@ -197,6 +221,7 @@ export const useTableData = () => {
     sortByDate12to1,
     filterDataByRating,
     filterDataByName,
+    filterDataByDate,
     filterDataByOwner,
   };
 };

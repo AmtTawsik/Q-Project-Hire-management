@@ -25,8 +25,12 @@ onMounted(() => {
   );
 });
 
-const { filterDataByRating, filterDataByName, filterDataByOwner } =
-  useTableData();
+const {
+  filterDataByName,
+  filterDataByRating,
+  filterDataByDate,
+  filterDataByOwner,
+} = useTableData();
 
 const selectField = ref('name');
 
@@ -39,6 +43,9 @@ const text = ref('');
 
 const ratingOp = ref('eq');
 const rating = ref('');
+
+const dateOp = ref('is');
+const date = ref('');
 
 watchEffect(() => {
   if (selectField.value === 'rating') {
@@ -62,12 +69,16 @@ watchEffect(() => {
 });
 
 const filterHandler = () => {
+  if (selectField.value === 'name') {
+    filterDataByName(text.value, textOp.value);
+  }
+
   if (selectField.value === 'rating') {
     filterDataByRating(rating.value, ratingOp.value);
   }
 
-  if (selectField.value === 'name') {
-    filterDataByName(text.value, textOp.value);
+  if (selectField.value === 'date') {
+    filterDataByDate(date.value, dateOp.value);
   }
 
   if (selectField.value === 'owner') {
@@ -137,14 +148,14 @@ const filterHandler = () => {
 
         <select
           v-if="dateField"
+          v-model="dateOp"
           class="bg-gray-50 border border-gray-300 text-gray-800 text-sm focus:ring-green-400 focus:border-transparent rounded-md block w-full py-1 max-lg:w-full"
         >
-          <option selected value="eq">&#x208C;</option>
-          <option value="nt-eq">&#x2260;</option>
-          <option value="lt">&lt;</option>
-          <option value="gt">&gt;</option>
-          <option value="le">&le;</option>
-          <option value="ge">&ge;</option>
+          <option selected value="is">is...</option>
+          <option value="is-before">is before...</option>
+          <option value="is-after">is after...</option>
+          <option value="is-on-before">is on or before...</option>
+          <option value="is-on-after">is on or after...</option>
         </select>
       </li>
       <li>
@@ -167,6 +178,7 @@ const filterHandler = () => {
         <input
           v-if="dateField"
           type="date"
+          v-model="date"
           class="bg-gray-50 border border-gray-300 text-gray-800 text-sm focus:ring-green-400 focus:border-transparent rounded-md block px-2 py-1 w-24 max-lg:w-full"
           required
         />
