@@ -132,6 +132,61 @@ export const useTableData = () => {
     DUMMY_DATA.value.sort((a, b) => b.appliedDate - a.appliedDate);
   };
 
+  const filterDataByRating = (rating, operator) => {
+    if (operator === 'eq') {
+      DUMMY_DATA.value = TABLE_DUMMY_DATA.filter(
+        (item) => item.rating === rating
+      );
+    } else if (operator === 'nt-eq') {
+      DUMMY_DATA.value = TABLE_DUMMY_DATA.filter(
+        (item) => item.rating !== rating
+      );
+    } else if (operator === 'lt') {
+      DUMMY_DATA.value = TABLE_DUMMY_DATA.filter(
+        (item) => item.rating < rating
+      );
+    } else if (operator === 'gt') {
+      DUMMY_DATA.value = TABLE_DUMMY_DATA.filter(
+        (item) => item.rating > rating
+      );
+    } else if (operator === 'le') {
+      DUMMY_DATA.value = TABLE_DUMMY_DATA.filter(
+        (item) => item.rating <= rating
+      );
+    } else if (operator === 'ge') {
+      DUMMY_DATA.value = TABLE_DUMMY_DATA.filter(
+        (item) => item.rating >= rating
+      );
+    }
+  };
+
+  const filterDataByName = (keyword, operator) => {
+    if (operator === 'is') {
+      DUMMY_DATA.value = TABLE_DUMMY_DATA.filter((item) =>
+        item.candidate.name.toLowerCase().includes(keyword.toLowerCase())
+      );
+    } else if (operator === 'is-not') {
+      console.log('runn');
+      DUMMY_DATA.value = TABLE_DUMMY_DATA.filter(
+        (item) =>
+          !item.candidate.name.toLowerCase().includes(keyword.toLowerCase())
+      );
+    }
+  };
+
+  const filterDataByOwner = (keyword, operator) => {
+    if (operator === 'is') {
+      DUMMY_DATA.value = TABLE_DUMMY_DATA.filter((item) =>
+        item.owner.name.toLowerCase().includes(keyword.toLowerCase())
+      );
+    } else if (operator === 'is-not') {
+      console.log('runn');
+      DUMMY_DATA.value = TABLE_DUMMY_DATA.filter(
+        (item) => !item.owner.name.toLowerCase().includes(keyword.toLowerCase())
+      );
+    }
+  };
+
   return {
     DUMMY_DATA,
     sortByNameAtoZ,
@@ -140,6 +195,9 @@ export const useTableData = () => {
     sortByRating5to1,
     sortByDate1to12,
     sortByDate12to1,
+    filterDataByRating,
+    filterDataByName,
+    filterDataByOwner,
   };
 };
 
