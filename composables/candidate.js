@@ -222,11 +222,14 @@ export const useTableData = () => {
         item.team.team.toLowerCase().includes(keyword.toLowerCase())
       );
     } else if (operator === 'is-not') {
-      console.log('runn');
       DUMMY_DATA.value = TABLE_DUMMY_DATA.filter(
         (item) => !item.team.team.toLowerCase().includes(keyword.toLowerCase())
       );
     }
+  };
+
+  const resetFilterFields = () => {
+    DUMMY_DATA.value = TABLE_DUMMY_DATA;
   };
 
   return {
@@ -243,6 +246,7 @@ export const useTableData = () => {
     filterDataByTeam,
     filterDataByDate,
     filterDataByOwner,
+    resetFilterFields,
   };
 };
 

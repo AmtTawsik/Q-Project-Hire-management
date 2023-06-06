@@ -1,5 +1,6 @@
 <script setup>
 import { FunnelIcon } from '@heroicons/vue/24/outline';
+import { XMarkIcon } from '@heroicons/vue/24/solid';
 import { Dropdown } from 'flowbite';
 
 onMounted(() => {
@@ -32,6 +33,7 @@ const {
   filterDataByOwner,
   filterDataByStages,
   filterDataByTeam,
+  resetFilterFields,
 } = useTableData();
 
 const selectField = ref('name');
@@ -48,6 +50,8 @@ const rating = ref('');
 
 const dateOp = ref('is');
 const date = ref('');
+
+const resetBtnVisible = ref(false);
 
 watchEffect(() => {
   if (selectField.value === 'rating') {
@@ -67,6 +71,18 @@ watchEffect(() => {
     numField.value = false;
     textField.value = false;
     dateField.value = true;
+  }
+});
+
+watchEffect(() => {
+  if (
+    text.value.trim().length !== 0 ||
+    rating.value.toString().trim().length !== 0 ||
+    date.value.trim().length !== 0
+  ) {
+    resetBtnVisible.value = true;
+  } else {
+    resetBtnVisible.value = false;
   }
 });
 
@@ -94,6 +110,21 @@ const filterHandler = () => {
   if (selectField.value === 'owner') {
     filterDataByOwner(text.value, textOp.value);
   }
+};
+
+const resetHandler = () => {
+  selectField.value = 'name';
+  textField.value = true;
+  numField.value = false;
+  dateField.value = false;
+  textOp.value = 'is';
+  ratingOp.value = 'eq';
+  dateOp.value = 'is';
+  text.value = '';
+  rating.value = '';
+  date.value = '';
+
+  resetFilterFields();
 };
 </script>
 
@@ -183,6 +214,8 @@ const filterHandler = () => {
           v-model="rating"
           class="bg-gray-50 border border-gray-300 text-gray-800 text-sm focus:ring-green-400 focus:border-transparent rounded-md block px-2 py-1 w-24 max-lg:w-full"
           required
+          max="5"
+          min="1"
         />
 
         <input
@@ -199,6 +232,15 @@ const filterHandler = () => {
           class="px-2 py-1 bg-gray-100 hover:bg-gray-200 border border-gray-300 hover:border-green-400 rounded-md text-sm text-gray-600 max-lg:w-full max-lg:bg-green-400 max-lg:text-gray-800"
         >
           Filter
+        </button>
+      </li>
+
+      <li v-if="resetBtnVisible" class="max-lg:w-full">
+        <button
+          @click="resetHandler"
+          class="p-1 bg-gray-100 hover:bg-gray-200 border border-gray-300 hover:border-green-400 rounded-md text-sm text-gray-600 max-lg:w-full max-lg:bg-green-400 max-lg:text-gray-800"
+        >
+          <XMarkIcon class="w-5 h-5" />
         </button>
       </li>
     </ul>
