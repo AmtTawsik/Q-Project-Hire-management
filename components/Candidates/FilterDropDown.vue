@@ -30,6 +30,8 @@ const {
   filterDataByRating,
   filterDataByDate,
   filterDataByOwner,
+  filterDataByStages,
+  filterDataByTeam,
 } = useTableData();
 
 const selectField = ref('name');
@@ -75,6 +77,14 @@ const filterHandler = () => {
 
   if (selectField.value === 'rating') {
     filterDataByRating(rating.value, ratingOp.value);
+  }
+
+  if (selectField.value === 'stages') {
+    filterDataByStages(text.value, textOp.value);
+  }
+
+  if (selectField.value === 'team') {
+    filterDataByTeam(text.value, textOp.value);
   }
 
   if (selectField.value === 'date') {
