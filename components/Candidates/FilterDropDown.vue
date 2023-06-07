@@ -144,7 +144,7 @@ const resetHandler = () => {
     class="z-10 hidden bg-white divide-y divide-gray-100 max-lg:w-28"
   >
     <ul
-      class="px-3 py-4 text-sm text-gray-700 flex items-center gap-1 shadow-md rounded-md max-lg:flex-col max-lg:items-start"
+      class="flex items-center gap-1 px-3 py-4 text-sm text-gray-700 rounded-md shadow-md max-lg:flex-col max-lg:items-start"
       aria-labelledby="filterDropDownBtn"
     >
       <li class="mr-1 max-lg:hidden">
