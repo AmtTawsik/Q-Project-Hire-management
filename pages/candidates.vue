@@ -21,7 +21,7 @@ import {
         class="flex items-center justify-between max-xl:flex-col max-xl:items-start max-xl:gap-4 max-sm:flex-row"
       >
         <div class="flex items-center">
-          <h3 class="text-2xl mr-6 max-xl:text-xl max-xl:mr-4 max-sm:hidden">
+          <h3 class="mr-6 text-2xl max-xl:text-xl max-xl:mr-4 max-sm:hidden">
             56 Candidates
           </h3>
 
@@ -33,38 +33,30 @@ import {
 
           <!-- SORT Dropdown -->
           <CandidatesSortDropDown />
+
+          <CandidatesGroupDropDown />
         </div>
 
         <div class="flex items-center">
-          <div class="flex items-center gap-2 mr-6 max-xl:gap-1 max-xl:mr-5">
-            <span class="text-2xl font-semibold max-xl:text-xl">3</span>
-            <p class="text-base text-gray-500 max-xl:text-sm">Selected</p>
-          </div>
-
-          <button
-            class="p-2 border border-gray-300 text-gray-500 bg-white rounded-md mr-5 hover:bg-gray-400 hover:text-white max-md:hidden"
-          >
-            <HandThumbDownIcon class="w-6 h-6" />
-          </button>
 
           <div
             class="pr-5 mr-5 border-r border-gray-400 max-md:border-none max-md:mr-0"
           >
             <button
-              class="p-2 border border-gray-300 bg-white text-gray-500 rounded-md hover:bg-gray-400 hover:text-white"
+              class="p-2 text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-400 hover:text-white"
             >
               <EllipsisVerticalIcon class="w-6 h-6 font-semibold" />
             </button>
           </div>
 
           <button
-            class="p-2 mr-5 border border-gray-300 bg-white text-gray-500 rounded-md hover:bg-gray-500 hover:text-white"
+            class="p-2 mr-5 text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-500 hover:text-white"
           >
             <ArrowDownTrayIcon class="w-6 h-6 font-semibold" />
           </button>
 
           <button
-            class="p-2 mr-5 border border-gray-300 bg-white text-gray-500 rounded-md hover:bg-gray-500 hover:text-white max-md:hidden"
+            class="p-2 mr-5 text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-500 hover:text-white max-md:hidden"
           >
             <PrinterIcon class="w-6 h-6 font-semibold" />
           </button>
@@ -81,9 +73,9 @@ import {
 
     <CandidatesTable />
 
-    <footer class="mt-auto py-3 flex items-center justify-between mb-2">
-      <div class="flex gap-4 items-center">
-        <span class="text-gray-500 text-base max-xl:text-sm max-md:hidden"
+    <footer class="flex items-center justify-between py-3 mt-auto mb-2">
+      <div class="flex items-center gap-4">
+        <span class="text-base text-gray-500 max-xl:text-sm max-md:hidden"
           >View</span
         >
 
@@ -136,19 +128,19 @@ import {
           </ul>
         </div>
 
-        <span class="text-gray-500 text-base max-xl:text-sm max-lg:hidden"
+        <span class="text-base text-gray-500 max-xl:text-sm max-lg:hidden"
           >Candidates per page</span
         >
       </div>
 
       <nav aria-label="Page navigation example">
-        <ul class="inline-flex -space-x-px items-center gap-2">
+        <ul class="inline-flex items-center gap-2 -space-x-px">
           <li>
             <div class="flex items-center text-gray-500">
               <ChevronLeftIcon class="w-5 h-5 max-xl:w-4 max-xl:h-4" />
               <a
                 href="#"
-                class="pl-1 pr-2 py-2 ml-0 leading-tight text-base rounded-l-lg hover:text-gray-700 max-xl:text-sm"
+                class="py-2 pl-1 pr-2 ml-0 text-base leading-tight rounded-l-lg hover:text-gray-700 max-xl:text-sm"
                 >Prev</a
               >
             </div>
@@ -193,7 +185,7 @@ import {
             <div class="flex items-center text-gray-500">
               <a
                 href="#"
-                class="pl-1 pr-2 py-2 ml-0 leading-tight text-base rounded-l-lg hover:text-gray-700 max-xl:text-sm"
+                class="py-2 pl-1 pr-2 ml-0 text-base leading-tight rounded-l-lg hover:text-gray-700 max-xl:text-sm"
                 >Next</a
               >
               <ChevronRightIcon class="w-5 h-5 max-xl:w-4 max-xl:h-4" />
