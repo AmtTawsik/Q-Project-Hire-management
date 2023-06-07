@@ -46,7 +46,7 @@ export const useTableData = () => {
         team: 'Design Team',
       },
 
-      appliedDate: new Date('2023-1-12'),
+      appliedDate: new Date('2023-01-12'),
       owner: {
         name: 'Albert Flores',
         image: p4,
@@ -89,10 +89,10 @@ export const useTableData = () => {
       },
       team: {
         self: 'UX Researcher',
-        team: 'Design Team',
+        team: 'Developer Team',
       },
 
-      appliedDate: new Date('2023-2-15'),
+      appliedDate: new Date('2023-02-15'),
       owner: {
         name: 'Kristin Watson',
         image: p2,
@@ -132,6 +132,106 @@ export const useTableData = () => {
     DUMMY_DATA.value.sort((a, b) => b.appliedDate - a.appliedDate);
   };
 
+  const filterDataByField = (cb) => {
+    DUMMY_DATA.value = TABLE_DUMMY_DATA.filter(cb);
+  };
+
+  const filterDataByName = (keyword, operator) => {
+    if (operator === 'is') {
+      filterDataByField((item) =>
+        item.candidate.name.toLowerCase().includes(keyword.toLowerCase())
+      );
+    } else if (operator === 'is-not') {
+      filterDataByField(
+        (item) =>
+          !item.candidate.name.toLowerCase().includes(keyword.toLowerCase())
+      );
+    }
+  };
+
+  const filterDataByRating = (rating, operator) => {
+    if (operator === 'eq') {
+      filterDataByField((item) => item.rating === rating);
+    } else if (operator === 'nt-eq') {
+      filterDataByField((item) => item.rating !== rating);
+    } else if (operator === 'lt') {
+      filterDataByField((item) => item.rating < rating);
+    } else if (operator === 'gt') {
+      filterDataByField((item) => item.rating > rating);
+    } else if (operator === 'le') {
+      filterDataByField((item) => item.rating <= rating);
+    } else if (operator === 'ge') {
+      filterDataByField((item) => item.rating >= rating);
+    }
+  };
+
+  const filterDataByDate = (targetDate, operator) => {
+    if (operator === 'is') {
+      filterDataByField(
+        (item) => item.appliedDate.getTime() === new Date(targetDate).getTime()
+      );
+    } else if (operator === 'is-before') {
+      filterDataByField(
+        (item) => item.appliedDate.getTime() < new Date(targetDate).getTime()
+      );
+    } else if (operator === 'is-after') {
+      filterDataByField(
+        (item) => item.appliedDate.getTime() > new Date(targetDate).getTime()
+      );
+    } else if (operator === 'is-on-before') {
+      filterDataByField(
+        (item) => item.appliedDate.getTime() <= new Date(targetDate).getTime()
+      );
+    } else if (operator === 'is-on-after') {
+      filterDataByField(
+        (item) => item.appliedDate.getTime() >= new Date(targetDate).getTime()
+      );
+    }
+  };
+
+  const filterDataByOwner = (keyword, operator) => {
+    if (operator === 'is') {
+      DUMMY_DATA.value = TABLE_DUMMY_DATA.filter((item) =>
+        item.owner.name.toLowerCase().includes(keyword.toLowerCase())
+      );
+    } else if (operator === 'is-not') {
+      console.log('runn');
+      DUMMY_DATA.value = TABLE_DUMMY_DATA.filter(
+        (item) => !item.owner.name.toLowerCase().includes(keyword.toLowerCase())
+      );
+    }
+  };
+
+  const filterDataByStages = (keyword, operator) => {
+    if (operator === 'is') {
+      DUMMY_DATA.value = TABLE_DUMMY_DATA.filter((item) =>
+        item.stages.state.toLowerCase().includes(keyword.toLowerCase())
+      );
+    } else if (operator === 'is-not') {
+      console.log('runn');
+      DUMMY_DATA.value = TABLE_DUMMY_DATA.filter(
+        (item) =>
+          !item.stages.state.toLowerCase().includes(keyword.toLowerCase())
+      );
+    }
+  };
+
+  const filterDataByTeam = (keyword, operator) => {
+    if (operator === 'is') {
+      DUMMY_DATA.value = TABLE_DUMMY_DATA.filter((item) =>
+        item.team.team.toLowerCase().includes(keyword.toLowerCase())
+      );
+    } else if (operator === 'is-not') {
+      DUMMY_DATA.value = TABLE_DUMMY_DATA.filter(
+        (item) => !item.team.team.toLowerCase().includes(keyword.toLowerCase())
+      );
+    }
+  };
+
+  const resetFilterFields = () => {
+    DUMMY_DATA.value = TABLE_DUMMY_DATA;
+  };
+
   return {
     DUMMY_DATA,
     sortByNameAtoZ,
@@ -140,6 +240,13 @@ export const useTableData = () => {
     sortByRating5to1,
     sortByDate1to12,
     sortByDate12to1,
+    filterDataByName,
+    filterDataByRating,
+    filterDataByStages,
+    filterDataByTeam,
+    filterDataByDate,
+    filterDataByOwner,
+    resetFilterFields,
   };
 };
 
