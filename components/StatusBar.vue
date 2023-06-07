@@ -18,7 +18,7 @@
           </h4>
           <div class="flex items-center gap-2">
             <PhotoIcon class="w-6 h-6 text-cyan-600 max-sm:hidden" />
-            <h3 class="text-black text-base max-xl:text-sm">Fikri Studio</h3>
+            <h3 class="text-black text-base max-xl:text-sm">Qualyval</h3>
           </div>
         </div>
 

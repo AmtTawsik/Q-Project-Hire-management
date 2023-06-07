@@ -578,7 +578,7 @@ onMounted(() => {
                     class="w-7 h-7 rounded-full"
                   />
 
-                  <p class="text-xs text-gray-700 font-medium">Bagus Fikri</p>
+                  <p class="text-xs text-gray-700 font-medium">Qualyval</p>
                 </div>
               </div>
               <div>
@@ -634,7 +634,7 @@ onMounted(() => {
 
                 <div>
                   <div class="flex text-xs items-center gap-2">
-                    <p class="font-semibold text-gray-600">Bagus Fikri</p>
+                    <p class="font-semibold text-gray-600">Qualyval</p>
                     <span class="text-gray-700">13 Mar 2021 - 04:23 PM</span>
                   </div>
 
@@ -744,7 +744,7 @@ onMounted(() => {
                     <p class="text-gray-600">
                       Scheduled by
 
-                      <span class="font-medium text-gray-800">Bagus Fikri</span>
+                      <span class="font-medium text-gray-800">Qualyval</span>
                     </p>
                   </div>
 
@@ -806,7 +806,7 @@ onMounted(() => {
                     <p class="text-gray-600">
                       Scheduled by
 
-                      <span class="font-medium text-gray-800">Bagus Fikri</span>
+                      <span class="font-medium text-gray-800">Qualyval</span>
                     </p>
                   </div>
 
@@ -868,7 +868,7 @@ onMounted(() => {
                     <p class="text-gray-600">
                       Scheduled by
 
-                      <span class="font-medium text-gray-800">Bagus Fikri</span>
+                      <span class="font-medium text-gray-800">Qualyval </span>
                     </p>
                   </div>
 

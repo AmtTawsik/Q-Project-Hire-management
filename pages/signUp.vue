@@ -8,7 +8,7 @@ definePageMeta({
     <NuxtLayout name="signup">
         <div class="grid grid-cols-12">
             <section class="col-span-12 md:col-span-6 text-center bg-[#F2E6DD] md:h-screen hidden md:block">
-                <h2 class="text-4xl font-bold text-gray-900 pt-10">Try Tiimi free for 15 Days</h2>
+                <h2 class="text-4xl font-bold text-gray-900 pt-10">Try Qualyval free for 15 Days</h2>
                 <p class="text-lg text-gray-600 w-8/12 mx-auto mt-3 mb-6">Get a chance to explore the product to its fullest
                     before choosing your ideal plan.</p>
                 <div class="flex justify-center">

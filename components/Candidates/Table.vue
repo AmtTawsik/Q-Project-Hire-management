@@ -187,7 +187,7 @@ onMounted(() => {
         </tr>
       </thead>
       <tbody v-if="!grouped.active" class="candidate-tbody">
-        <tr class="text-base border-b bg-gray-50 max-xl:text-sm" v-for="data in DUMMY_DATA">
+        <tr class="text-base border-b bg-gray-50 max-xl:text-sm cursor-pointer" v-for="data in DUMMY_DATA">
           <CandidatesTableRow :key="data.id" :id="data.id" :candidate="data.candidate" :rating="data.rating"
             :stages="data.stages" :team="data.team" :appliedDate="data.appliedDate" :owner="data.owner"
             :headers="headers" />

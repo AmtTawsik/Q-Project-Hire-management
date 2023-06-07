@@ -71,7 +71,7 @@
         <div class="flex items-center justify-around py-4">
           <div class="px-2 text-sm">
             <h4 class="font-bold">
-              Your Application for Senior Designer - FikriStudio
+              Your Application for Senior Designer - Qualyval
             </h4>
             <p class="text-base text-gray-500 sm:text-sm">Job: Senior UIX Designer | Design Team</p>
           </div>

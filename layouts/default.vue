@@ -22,7 +22,7 @@
               <span
                 class="block w-6 h-6 bg-gray-900 rounded-b-md rounded-l-md"
               ></span>
-              Fikri Studio
+              Qualyval
             </div>
           </div>
           <div><ChevronUpDownIcon class="w-6 h-6 text-gray-500" /></div>
