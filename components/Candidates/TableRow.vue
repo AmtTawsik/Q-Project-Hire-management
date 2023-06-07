@@ -41,7 +41,7 @@ const detailsHandler = (rowData) => {
       </div>
     </td>
     <td id="button-open" @click="detailsHandler(rowData)" scope="row"
-      class="flex items-center px-3 py-5 text-gray-900 cursor-pointer">
+      class="flex items-center px-3 py-5 text-gray-900 w-[210px]">
       <img class="w-10 h-10 rounded-full" :src="candidate.image" alt="Jese image" />
 
       <p class="pl-3 truncate">{{ candidate.name }}</p>
