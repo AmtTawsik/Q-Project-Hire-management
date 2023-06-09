@@ -1,6 +1,6 @@
 <template>
   <div class="bg-gray-50">
-    <div class="flex items-center w-full gap-5 px-3 text-sm font-bold border-b border-b-gray-200 max-h-screen overflow-y-hidden no-scrollbar">
+    <div class="flex items-center w-full max-h-screen gap-5 px-3 overflow-y-hidden text-sm font-bold border-b border-b-gray-200 no-scrollbar">
       <h4 class="px-2 py-3 border-b-2 border-b-yellow-300">
         RECRUITMENT INBOX
       </h4>
