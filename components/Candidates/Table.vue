@@ -1,28 +1,11 @@
 <script setup>
-import { useCandidate } from '~/composables/candidate.js';
 import { ChevronUpDownIcon } from '@heroicons/vue/24/solid';
 import draggable from 'vuedraggable';
 import { Drawer } from 'flowbite';
 import useGroup from '~/composables/grouping';
 
-const headers = ref(['Rating', 'Stages', 'Team', 'Applied Date', 'Owner']);
-
-const headMap = new Map([
-  ['Rating', 'isRatingVisible'],
-  ['Stages', 'isStagesVisible'],
-  ['Team', 'isTeamVisible'],
-  ['Applied Date', 'isDateVisible'],
-  ['Owner', 'isOwnerVisible'],
-]);
-
-const groupMap = new Map([
-  ['Rating', arrangeByRating],
-  ['Stages', arrangeByStages],
-  ['Team', arrangeByTeam],
-  ['Owner', arrangeByOwner],
-]);
-
-const { DUMMY_DATA } = useTableData();
+const { TABLE_DATA,headers,groupMap,headMap,changeGroup,tableRowMap} =defineProps(['TABLE_DATA','headers','groupMap','headMap','changeGroup','tableRowMap'])
+const local_headers=ref([...headers])
 const { grouped } = useGroup();
 const { tableTdVisible } = useHideDropDown();
 
@@ -31,68 +14,15 @@ byGrouped = computed(() => {
   if (!grouped?.value.active) {
     return [];
   }
-  return groupMap.get(grouped.value.groupedBy)(DUMMY_DATA.value);
+  return groupMap.get(grouped.value.groupedBy)(TABLE_DATA);
 });
-
-function arrangeByRating(data) {
-  return data.reduce((acc, user) => {
-    (acc[user.rating] = acc[user.rating] || []).push(user);
-    return acc;
-  }, {});
-}
-function arrangeByStages(data) {
-  return data.reduce((acc, user) => {
-    (acc[user.stages.state] ||= []).push(user);
-    return acc;
-  }, {});
-}
-function arrangeByTeam(data) {
-  return data.reduce((acc, user) => {
-    (acc[user.team.name] ||= []).push(user);
-    return acc;
-  }, {});
-}
-function arrangeByOwner(data) {
-  return data.reduce((acc, user) => {
-    (acc[user.owner.name] ||= []).push(user);
-    return acc;
-  }, {});
-}
-function changeGroup(list, evt) {
-  console.log('hello');
-  if (evt.added !== undefined) {
-    switch (grouped.value.groupedBy) {
-      case 'Rating':
-        list[evt.added.newIndex].rating =
-          list[(evt.added.newIndex + 1) % list.length].rating;
-        break;
-      case 'Team':
-        list[evt.added.newIndex].team.name =
-          list[(evt.added.newIndex + 1) % list.length].team.name;
-        break;
-      case 'Stages':
-        list[evt.added.newIndex].stages.state =
-          list[(evt.added.newIndex + 1) % list.length].stages.state;
-        break;
-      case 'Owner':
-        console.log('hello2');
-        list[evt.added.newIndex].owner = {
-          ...list[(evt.added.newIndex + 1) % list.length].owner,
-        };
-        break;
-      default:
-        console.log('hello3');
-        break;
-    }
-  }
-}
 
 onMounted(() => {
   // setup available elements
   const $buttonElement = document.querySelectorAll('#button-open');
   const $drawerElement = document.querySelector('#drawer-right');
   const $closeButton = document.querySelector('#close-button');
-
+  
   // set modal options
 
   const drawerOptions = {
@@ -109,11 +39,9 @@ onMounted(() => {
   if ($drawerElement) {
     const drawer = new Drawer($drawerElement, drawerOptions);
 
-    // set event listeners for the button to show the drawer
     $buttonElement.forEach((el) => {
       el.addEventListener('click', () => drawer.toggle());
     });
-    // $closeButton.addEventListener('click', () => drawer.hide());
   }
 });
 </script>
@@ -128,7 +56,7 @@ onMounted(() => {
         v-if="!grouped.active"
         class="text-sm text-gray-800 bg-white shadow-sm"
       >
-        <draggable v-model="headers" item-key="id" tag="tr">
+        <draggable v-model="local_headers" item-key="id" tag="tr">
           <template #header>
             <th scope="col" class="p-4 rounded-l-md">
               <div class="flex items-center">
@@ -151,12 +79,12 @@ onMounted(() => {
           </template>
           <template #item="{ element: header }">
             <th
-              v-if="tableTdVisible[headMap.get(header)]"
+              v-if="tableTdVisible[headMap.get(header.name)]"
               scope="col"
               class="px-3 py-3 cursor-pointer"
             >
               <div class="flex items-center gap-1">
-                <span>{{ header }}</span>
+                <span>{{ header.name }}</span>
                 <ChevronUpDownIcon class="w-4 h-4" />
               </div>
             </th>
@@ -171,9 +99,9 @@ onMounted(() => {
       <thead v-else class="text-sm text-gray-800 bg-white shadow-sm">
         <tr>
           <draggable
-            v-model="headers"
+            v-model="local_headers"
             item-key="id"
-            tag="th"
+            tag="tr"
             class="flex items-center gap-8"
           >
             <template #header>
@@ -198,12 +126,12 @@ onMounted(() => {
             </template>
             <template #item="{ element: header }">
               <th
-                v-if="tableTdVisible[headMap.get(header)]"
+                v-if="tableTdVisible[headMap.get(header.name)]"
                 scope="col"
                 class="px-3 py-3"
               >
                 <div class="flex items-center gap-1">
-                  <span>{{ header }}</span>
+                  <span>{{ header.name }}</span>
                   <ChevronUpDownIcon class="w-4 h-4" />
                 </div>
               </th>
@@ -218,19 +146,14 @@ onMounted(() => {
       </thead>
       <tbody v-if="!grouped.active" class="candidate-tbody">
         <tr
-          class="text-base border-b bg-gray-50 max-xl:text-sm cursor-pointer"
-          v-for="data in DUMMY_DATA"
+          class="text-base border-b cursor-pointer bg-gray-50 max-xl:text-sm"
+          v-for="(data,index) in TABLE_DATA"
         >
           <CandidatesTableRow
             :key="data.id"
-            :id="data.id"
-            :candidate="data.candidate"
-            :rating="data.rating"
-            :stages="data.stages"
-            :team="data.team"
-            :appliedDate="data.appliedDate"
-            :owner="data.owner"
-            :headers="headers"
+            :data="data"
+            :tableRowMap="tableRowMap"
+            :headers="local_headers"
           />
         </tr>
       </tbody>
@@ -249,20 +172,15 @@ onMounted(() => {
             :group="{ name: 'candidates', pull: true, put: true }"
             itemKey="grouped"
             tag="tr"
-            @change="changeGroup(candidates, $event)"
+            @change="changeGroup(candidates, $event,grouped.groupedBy)"
           >
-            <template #item="{ element: data }">
-              <tr class="cursor-grab">
+            <template #item="{ element: data,index }">
+              <tr class="text-base border-b cursor-grab bg-gray-50 max-xl:text-sm">
                 <CandidatesTableRow
                   :key="data.id"
-                  :id="data.id"
-                  :candidate="data.candidate"
-                  :rating="data.rating"
-                  :stages="data.stages"
-                  :team="data.team"
-                  :appliedDate="data.appliedDate"
-                  :owner="data.owner"
-                  :headers="headers"
+                  :data="data"
+                  :tableRowMap="tableRowMap"
+                  :headers="local_headers"
                 />
               </tr>
             </template>

@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .router-link-exact-active {
-  @apply bg-yellow-300 text-gray-800 hover:text-white;
+  @apply text-gray-800 bg-yellow-300 hover:text-white;
 }
 
 
@@ -46,3 +46,5 @@
     width: 100%;
   }
 }
+
+::-webkit-scrollbar:
