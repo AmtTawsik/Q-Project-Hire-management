@@ -27,12 +27,9 @@ onMounted(() => {
 });
 
 const {
-  filterDataByName,
-  filterDataByRating,
+  filterDataByText,
+  filterDataByNum,
   filterDataByDate,
-  filterDataByOwner,
-  filterDataByStages,
-  filterDataByTeam,
   resetFilterFields,
 } = useTableData();
 
@@ -87,28 +84,39 @@ watchEffect(() => {
 });
 
 const filterHandler = () => {
-  if (selectField.value === 'name') {
-    filterDataByName(text.value, textOp.value);
-  }
+  const selectedField = selectField.value;
+  const selectedText = text.value;
+  const selectedTextOp = textOp.value;
+  const selectedRating = rating.value;
+  const selectedRatingOp = ratingOp.value;
+  const selectedDate = date.value;
+  const selectedDateOp = dateOp.value;
 
-  if (selectField.value === 'rating') {
-    filterDataByRating(rating.value, ratingOp.value);
-  }
+  // const filetMap = new Map([
+  //   ['Number', filterDataByNum],
+  //   ['Date', filterDataByDate],
+  //   ['String', filterDataByText],
+  // ]);
 
-  if (selectField.value === 'stages') {
-    filterDataByStages(text.value, textOp.value);
-  }
-
-  if (selectField.value === 'team') {
-    filterDataByTeam(text.value, textOp.value);
-  }
-
-  if (selectField.value === 'date') {
-    filterDataByDate(date.value, dateOp.value);
-  }
-
-  if (selectField.value === 'owner') {
-    filterDataByOwner(text.value, textOp.value);
+  switch (selectedField) {
+    case 'name':
+      filterDataByText(selectedText, selectedTextOp, 'candidate.name');
+      break;
+    case 'rating':
+      filterDataByNum(selectedRating, selectedRatingOp, 'rating');
+      break;
+    case 'stages':
+      filterDataByText(selectedText, selectedTextOp, 'stages.state');
+      break;
+    case 'team':
+      filterDataByText(selectedText, selectedTextOp, 'team.team');
+      break;
+    case 'date':
+      filterDataByDate(selectedDate, selectedDateOp, 'appliedDate');
+      break;
+    case 'owner':
+      filterDataByText(selectedText, selectedTextOp, 'owner.name');
+      break;
   }
 };
 
