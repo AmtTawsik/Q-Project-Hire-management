@@ -132,27 +132,62 @@ export const useTableData = () => {
     DUMMY_DATA.value.sort((a, b) => b.appliedDate - a.appliedDate);
   };
 
+  // FILTERING
   const filterDataByField = (cb) => {
     DUMMY_DATA.value = TABLE_DUMMY_DATA.filter(cb);
   };
 
   const filterDataByText = (keyword, operator, field) => {
-    const [key, nestedKey] = field.split('.');
+    const nestedKeys = field.split('.');
 
-    switch (operator) {
-      case 'is':
-        filterDataByField((item) =>
-          item[key][nestedKey].toLowerCase().includes(keyword.toLowerCase())
-        );
-        break;
-      case 'is-not':
-        filterDataByField(
-          (item) =>
-            !item[key][nestedKey].toLowerCase().includes(keyword.toLowerCase())
-        );
-        break;
-    }
+    filterDataByField((item) => {
+      let fieldValue = item;
+
+      // Traverse the nested keys to access the final value
+      for (const key of nestedKeys) {
+        if (fieldValue && fieldValue.hasOwnProperty(key)) {
+          fieldValue = fieldValue[key];
+        } else {
+          fieldValue = undefined;
+          break;
+        }
+      }
+
+      // Perform the filtering based on the operator and keyword
+      switch (operator) {
+        case 'is':
+          return (
+            fieldValue &&
+            fieldValue.toLowerCase().includes(keyword.toLowerCase())
+          );
+        case 'is-not':
+          return (
+            !fieldValue ||
+            !fieldValue.toLowerCase().includes(keyword.toLowerCase())
+          );
+        default:
+          return true; // No operator specified, return all data
+      }
+    });
   };
+
+  // const filterDataByText = (keyword, operator, field) => {
+  //   const [key, nestedKey] = field.split('.');
+
+  //   switch (operator) {
+  //     case 'is':
+  //       filterDataByField((item) =>
+  //         item[key][nestedKey].toLowerCase().includes(keyword.toLowerCase())
+  //       );
+  //       break;
+  //     case 'is-not':
+  //       filterDataByField(
+  //         (item) =>
+  //           !item[key][nestedKey].toLowerCase().includes(keyword.toLowerCase())
+  //       );
+  //       break;
+  //   }
+  // };
 
   const filterDataByNum = (inputNum, operator, field) => {
     switch (operator) {
