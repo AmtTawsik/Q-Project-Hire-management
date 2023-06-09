@@ -132,99 +132,113 @@ export const useTableData = () => {
     DUMMY_DATA.value.sort((a, b) => b.appliedDate - a.appliedDate);
   };
 
+  // FILTERING
   const filterDataByField = (cb) => {
     DUMMY_DATA.value = TABLE_DUMMY_DATA.filter(cb);
   };
 
-  const filterDataByName = (keyword, operator) => {
-    if (operator === 'is') {
-      filterDataByField((item) =>
-        item.candidate.name.toLowerCase().includes(keyword.toLowerCase())
-      );
-    } else if (operator === 'is-not') {
-      filterDataByField(
-        (item) =>
-          !item.candidate.name.toLowerCase().includes(keyword.toLowerCase())
-      );
+  const filterDataByText = (keyword, operator, field) => {
+    const nestedKeys = field.split('.');
+
+    filterDataByField((item) => {
+      let fieldValue = item;
+
+      // Traverse the nested keys to access the final value
+      for (const key of nestedKeys) {
+        if (fieldValue && fieldValue.hasOwnProperty(key)) {
+          fieldValue = fieldValue[key];
+        } else {
+          fieldValue = undefined;
+          break;
+        }
+      }
+
+      // Perform the filtering based on the operator and keyword
+      switch (operator) {
+        case 'is':
+          return (
+            fieldValue &&
+            fieldValue.toLowerCase().includes(keyword.toLowerCase())
+          );
+        case 'is-not':
+          return (
+            !fieldValue ||
+            !fieldValue.toLowerCase().includes(keyword.toLowerCase())
+          );
+        default:
+          return true; // No operator specified, return all data
+      }
+    });
+  };
+
+  // const filterDataByText = (keyword, operator, field) => {
+  //   const [key, nestedKey] = field.split('.');
+
+  //   switch (operator) {
+  //     case 'is':
+  //       filterDataByField((item) =>
+  //         item[key][nestedKey].toLowerCase().includes(keyword.toLowerCase())
+  //       );
+  //       break;
+  //     case 'is-not':
+  //       filterDataByField(
+  //         (item) =>
+  //           !item[key][nestedKey].toLowerCase().includes(keyword.toLowerCase())
+  //       );
+  //       break;
+  //   }
+  // };
+
+  const filterDataByNum = (inputNum, operator, field) => {
+    switch (operator) {
+      case 'eq':
+        filterDataByField((item) => item[field] === inputNum);
+        break;
+      case 'nt-eq':
+        filterDataByField((item) => item[field] !== inputNum);
+        break;
+      case 'lt':
+        filterDataByField((item) => item[field] < inputNum);
+        break;
+      case 'gt':
+        filterDataByField((item) => item[field] > inputNum);
+        break;
+      case 'le':
+        filterDataByField((item) => item[field] <= inputNum);
+        break;
+      case 'ge':
+        filterDataByField((item) => item[field] >= inputNum);
+        break;
     }
   };
 
-  const filterDataByRating = (rating, operator) => {
-    if (operator === 'eq') {
-      filterDataByField((item) => item.rating === rating);
-    } else if (operator === 'nt-eq') {
-      filterDataByField((item) => item.rating !== rating);
-    } else if (operator === 'lt') {
-      filterDataByField((item) => item.rating < rating);
-    } else if (operator === 'gt') {
-      filterDataByField((item) => item.rating > rating);
-    } else if (operator === 'le') {
-      filterDataByField((item) => item.rating <= rating);
-    } else if (operator === 'ge') {
-      filterDataByField((item) => item.rating >= rating);
-    }
-  };
-
-  const filterDataByDate = (targetDate, operator) => {
-    if (operator === 'is') {
-      filterDataByField(
-        (item) => item.appliedDate.getTime() === new Date(targetDate).getTime()
-      );
-    } else if (operator === 'is-before') {
-      filterDataByField(
-        (item) => item.appliedDate.getTime() < new Date(targetDate).getTime()
-      );
-    } else if (operator === 'is-after') {
-      filterDataByField(
-        (item) => item.appliedDate.getTime() > new Date(targetDate).getTime()
-      );
-    } else if (operator === 'is-on-before') {
-      filterDataByField(
-        (item) => item.appliedDate.getTime() <= new Date(targetDate).getTime()
-      );
-    } else if (operator === 'is-on-after') {
-      filterDataByField(
-        (item) => item.appliedDate.getTime() >= new Date(targetDate).getTime()
-      );
-    }
-  };
-
-  const filterDataByOwner = (keyword, operator) => {
-    if (operator === 'is') {
-      DUMMY_DATA.value = TABLE_DUMMY_DATA.filter((item) =>
-        item.owner.name.toLowerCase().includes(keyword.toLowerCase())
-      );
-    } else if (operator === 'is-not') {
-      console.log('runn');
-      DUMMY_DATA.value = TABLE_DUMMY_DATA.filter(
-        (item) => !item.owner.name.toLowerCase().includes(keyword.toLowerCase())
-      );
-    }
-  };
-
-  const filterDataByStages = (keyword, operator) => {
-    if (operator === 'is') {
-      DUMMY_DATA.value = TABLE_DUMMY_DATA.filter((item) =>
-        item.stages.state.toLowerCase().includes(keyword.toLowerCase())
-      );
-    } else if (operator === 'is-not') {
-      console.log('runn');
-      DUMMY_DATA.value = TABLE_DUMMY_DATA.filter(
-        (item) =>
-          !item.stages.state.toLowerCase().includes(keyword.toLowerCase())
-      );
-    }
-  };
-
-  const filterDataByTeam = (keyword, operator) => {
-    if (operator === 'is') {
-      DUMMY_DATA.value = TABLE_DUMMY_DATA.filter((item) =>
-        item.team.name.toLowerCase().includes(keyword.toLowerCase())
-      );
-    } else if (operator === 'is-not') {
-      DUMMY_DATA.value = TABLE_DUMMY_DATA.filter(
-        (item) => !item.team.name.toLowerCase().includes(keyword.toLowerCase())
-      );
+  const filterDataByDate = (targetDate, operator, field) => {
+    switch (operator) {
+      case 'is':
+        filterDataByField(
+          (item) => item[field].getTime() === new Date(targetDate).getTime()
+        );
+        break;
+      case 'is-before':
+        filterDataByField(
+          (item) => item[field].getTime() < new Date(targetDate).getTime()
+        );
+        break;
+      case 'is-after':
+        filterDataByField(
+          (item) => item[field].getTime() > new Date(targetDate).getTime()
+        );
+        break;
+      case 'is-on-before':
+        filterDataByField(
+          (item) => item[field].getTime() <= new Date(targetDate).getTime()
+        );
+        break;
+      case 'is-on-after':
+        filterDataByField(
+          (item) => item[field].getTime() >= new Date(targetDate).getTime()
+        );
+        break;
     }
   };
 
@@ -240,12 +254,9 @@ export const useTableData = () => {
     sortByRating5to1,
     sortByDate1to12,
     sortByDate12to1,
-    filterDataByName,
-    filterDataByRating,
-    filterDataByStages,
-    filterDataByTeam,
+    filterDataByText,
+    filterDataByNum,
     filterDataByDate,
-    filterDataByOwner,
     resetFilterFields,
   };
 };

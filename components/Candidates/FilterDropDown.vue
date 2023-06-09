@@ -27,103 +27,88 @@ onMounted(() => {
 });
 
 const {
-  filterDataByName,
-  filterDataByRating,
+  filterDataByText,
+  filterDataByNum,
   filterDataByDate,
-  filterDataByOwner,
-  filterDataByStages,
-  filterDataByTeam,
   resetFilterFields,
 } = useTableData();
 
-const selectField = ref('name');
+const selectField = ref('text-name');
 
-const numField = ref(true);
-const textField = ref(false);
-const dateField = ref(false);
+const text = reactive({
+  text: '',
+  op: 'is',
+});
 
-const textOp = ref('is');
-const text = ref('');
+const num = reactive({
+  num: '',
+  op: 'eq',
+});
 
-const ratingOp = ref('eq');
-const rating = ref('');
-
-const dateOp = ref('is');
-const date = ref('');
+const date = reactive({
+  date: '',
+  op: 'is',
+});
 
 const resetBtnVisible = ref(false);
 
 watchEffect(() => {
-  if (selectField.value === 'rating') {
-    numField.value = true;
-    textField.value = false;
-    dateField.value = false;
-  } else if (
-    selectField.value === 'name' ||
-    selectField.value === 'stages' ||
-    selectField.value === 'team' ||
-    selectField.value === 'owner'
-  ) {
-    numField.value = false;
-    textField.value = true;
-    dateField.value = false;
-  } else if (selectField.value === 'date') {
-    numField.value = false;
-    textField.value = false;
-    dateField.value = true;
-  }
-});
-
-watchEffect(() => {
   if (
-    text.value.trim().length !== 0 ||
-    rating.value.toString().trim().length !== 0 ||
-    date.value.trim().length !== 0
+    text.text.trim().length !== 0 ||
+    num.num.toString().trim().length !== 0 ||
+    date.date.trim().length !== 0
   ) {
     resetBtnVisible.value = true;
   } else {
     resetBtnVisible.value = false;
+    resetFilterFields();
   }
 });
 
 const filterHandler = () => {
-  if (selectField.value === 'name') {
-    filterDataByName(text.value, textOp.value);
-  }
+  const selectedField = selectField.value.split('-')[1];
+  const selectedText = text.text;
+  const selectedTextOp = text.op;
+  const selectedRating = num.num;
+  const selectedRatingOp = num.op;
+  const selectedDate = date.date;
+  const selectedDateOp = date.op;
 
-  if (selectField.value === 'rating') {
-    filterDataByRating(rating.value, ratingOp.value);
-  }
+  // const filetMap = new Map([
+  //   ['Number', filterDataByNum],
+  //   ['Date', filterDataByDate],
+  //   ['String', filterDataByText],
+  // ]);
 
-  if (selectField.value === 'stages') {
-    filterDataByStages(text.value, textOp.value);
-  }
-
-  if (selectField.value === 'team') {
-    filterDataByTeam(text.value, textOp.value);
-  }
-
-  if (selectField.value === 'date') {
-    filterDataByDate(date.value, dateOp.value);
-  }
-
-  if (selectField.value === 'owner') {
-    filterDataByOwner(text.value, textOp.value);
+  switch (selectedField) {
+    case 'name':
+      filterDataByText(selectedText, selectedTextOp, 'candidate.name');
+      break;
+    case 'rating':
+      filterDataByNum(selectedRating, selectedRatingOp, 'rating');
+      break;
+    case 'stages':
+      filterDataByText(selectedText, selectedTextOp, 'stages.state');
+      break;
+    case 'team':
+      filterDataByText(selectedText, selectedTextOp, 'team.team');
+      break;
+    case 'date':
+      filterDataByDate(selectedDate, selectedDateOp, 'appliedDate');
+      break;
+    case 'owner':
+      filterDataByText(selectedText, selectedTextOp, 'owner.name');
+      break;
   }
 };
 
 const resetHandler = () => {
-  selectField.value = 'name';
-  textField.value = true;
-  numField.value = false;
-  dateField.value = false;
-  textOp.value = 'is';
-  ratingOp.value = 'eq';
-  dateOp.value = 'is';
-  text.value = '';
-  rating.value = '';
-  date.value = '';
-
+  text.text = '';
+  num.num = '';
+  date.date = '';
+  text.op = 'is';
+  num.op = 'eq';
+  date.op = 'is';
   resetFilterFields();
 };
 </script>
@@ -156,18 +141,18 @@ const resetHandler = () => {
           v-model="selectField"
           class="bg-gray-50 border border-gray-300 text-gray-800 text-sm focus:ring-green-400 focus:border-transparent rounded-md block w-full px-2 py-1 max-lg:w-full"
         >
-          <option value="name" selected>Name</option>
-          <option value="rating">Rating</option>
-          <option value="stages">Stages</option>
-          <option value="team">Team</option>
-          <option value="date">Date</option>
-          <option value="owner">Owner</option>
+          <option value="text-name" selected>Name</option>
+          <option value="num-rating">Rating</option>
+          <option value="text-stages">Stages</option>
+          <option value="text-team">Team</option>
+          <option value="date-date">Date</option>
+          <option value="text-owner">Owner</option>
         </select>
       </li>
       <li>
         <select
-          v-if="textField"
-          v-model="textOp"
+          v-if="selectField.split('-')[0] === 'text'"
+          v-model="text.op"
           class="bg-gray-50 border border-gray-300 text-gray-800 text-sm focus:ring-green-400 focus:border-transparent rounded-md block w-full py-1 max-lg:w-full"
         >
           <option selected value="is">is...</option>
@@ -175,8 +160,8 @@ const resetHandler = () => {
         </select>
 
         <select
-          v-if="numField"
-          v-model="ratingOp"
+          v-if="selectField.split('-')[0] === 'num'"
+          v-model="num.op"
           class="bg-gray-50 border border-gray-300 text-gray-800 text-sm focus:ring-green-400 focus:border-transparent rounded-md block w-full py-1 max-lg:w-full"
         >
           <option selected value="eq">&#x208C;</option>
@@ -188,8 +173,8 @@ const resetHandler = () => {
         </select>
 
         <select
-          v-if="dateField"
-          v-model="dateOp"
+          v-if="selectField.split('-')[0] === 'date'"
+          v-model="date.op"
           class="bg-gray-50 border border-gray-300 text-gray-800 text-sm focus:ring-green-400 focus:border-transparent rounded-md block w-full py-1 max-lg:w-full"
         >
           <option selected value="is">is...</option>
@@ -201,17 +186,17 @@ const resetHandler = () => {
       </li>
       <li>
         <input
-          v-if="textField"
+          v-if="selectField.split('-')[0] === 'text'"
           type="text"
-          v-model="text"
+          v-model="text.text"
           class="bg-gray-50 border border-gray-300 text-gray-800 text-sm focus:ring-green-400 focus:border-transparent rounded-md block px-2 py-1 w-24 max-lg:w-full"
           required
         />
 
         <input
-          v-if="numField"
+          v-if="selectField.split('-')[0] === 'num'"
           type="number"
-          v-model="rating"
+          v-model="num.num"
           class="bg-gray-50 border border-gray-300 text-gray-800 text-sm focus:ring-green-400 focus:border-transparent rounded-md block px-2 py-1 w-24 max-lg:w-full"
           required
           max="5"
@@ -219,9 +204,9 @@ const resetHandler = () => {
         />
 
         <input
-          v-if="dateField"
+          v-if="selectField.split('-')[0] === 'date'"
           type="date"
-          v-model="date"
+          v-model="date.date"
           class="bg-gray-50 border border-gray-300 text-gray-800 text-sm focus:ring-green-400 focus:border-transparent rounded-md block px-2 py-1 w-24 max-lg:w-full"
           required
         />
