@@ -20,7 +20,7 @@ export const useTableData = () => {
       },
       team: {
         self: 'Junior UI Designer',
-        team: 'Design Team',
+        name: 'Design Team',
       },
 
       appliedDate: new Date('2022-02-15'),
@@ -43,7 +43,7 @@ export const useTableData = () => {
       },
       team: {
         self: 'Junior UX Designer',
-        team: 'Design Team',
+        name: 'Design Team',
       },
 
       appliedDate: new Date('2023-01-12'),
@@ -66,7 +66,7 @@ export const useTableData = () => {
       },
       team: {
         self: 'UX Researcher',
-        team: 'Design Team',
+        name: 'Design Team',
       },
 
       appliedDate: new Date('2022-12-15'),
@@ -89,7 +89,7 @@ export const useTableData = () => {
       },
       team: {
         self: 'UX Researcher',
-        team: 'Developer Team',
+        name: 'Developer Team',
       },
 
       appliedDate: new Date('2023-02-15'),
