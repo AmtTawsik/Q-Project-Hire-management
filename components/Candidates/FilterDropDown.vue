@@ -223,7 +223,7 @@ const resetHandler = () => {
       <li v-if="resetBtnVisible" class="max-lg:w-full">
         <button
           @click="resetHandler"
-          class="p-1 bg-gray-100 hover:bg-gray-200 border border-gray-300 hover:border-green-400 rounded-md text-sm text-gray-600 max-lg:w-full max-lg:bg-green-400 max-lg:text-gray-800"
+          class="p-1 bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-md text-sm text-gray-600 max-lg:w-full max-lg:text-gray-800 max-lg:flex max-lg:items-center max-lg:justify-center"
         >
           <XMarkIcon class="w-5 h-5" />
         </button>
