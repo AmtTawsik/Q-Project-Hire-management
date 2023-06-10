@@ -35,7 +35,7 @@ watch(rating, (changedValue) => {
 });
 
 watch(date, (changedValue) => {
-  sortByNumOrDate(changedValue.split('-')[1], 'date');
+  sortByNumOrDate(changedValue.split('-')[1], 'appliedDate');
 });
 </script>
 
@@ -76,7 +76,7 @@ watch(date, (changedValue) => {
           class="block w-full px-2 py-1 text-xs text-gray-900 border border-gray-300 rounded-md bg-gray-50 focus:ring-gray-500 focus:border-gray-400"
         >
           <option value="rating-asc" selected>1 &rarr; 9</option>
-          <option value="rating-dsc">9 &rarr; 1</option>
+          <option value="rating-desc">9 &rarr; 1</option>
         </select>
       </li>
       <li class="flex items-center gap-2">
