@@ -28,7 +28,7 @@ onMounted(() => {
   <button
     id="hideDropdownBtn"
     data-dropdown-toggle="hideDropdownMenu"
-    class="focus:outline-none text-gray-600 font-medium rounded-lg text-sm px-3 py-2.5 text-center inline-flex items-center border border-gray-300 hover:bg-gray-400 hover:text-white ml-4"
+    class="focus:outline-none text-gray-500 font-medium rounded-lg text-sm px-3 py-2.5 text-center inline-flex items-center border border-gray-300 hover:bg-gray-400 hover:text-white ml-4"
     type="button"
   >
     <EyeIcon class="w-5 h-5" />
