@@ -20,41 +20,22 @@ onMounted(() => {
   const sortDropDown = new Dropdown($targetElHide, $triggerElHide, options);
 });
 
-const {
-  sortByNameAtoZ,
-  sortByNameZtoA,
-  sortByRating1to5,
-  sortByRating5to1,
-  sortByDate1to12,
-  sortByDate12to1,
-} = useTableData();
+const { sortByText, sortByNumOrDate } = useTableData();
 
-const name = ref('nameAsc');
-const rating = ref('ratingAsc');
-const date = ref('dateAsc');
+const name = ref('name-asc');
+const rating = ref('rating-asc');
+const date = ref('date-asc');
 
-watch(name, () => {
-  if (name.value === 'nameAsc') {
-    sortByNameAtoZ();
-  } else if (name.value === 'nameDesc') {
-    sortByNameZtoA();
-  }
+watch(name, (changedValue) => {
+  sortByText(changedValue.split('-')[1], 'candidate.name');
 });
 
-watch(rating, () => {
-  if (rating.value === 'ratingAsc') {
-    sortByRating1to5();
-  } else if (rating.value === 'ratingDesc') {
-    sortByRating5to1();
-  }
+watch(rating, (changedValue) => {
+  sortByNumOrDate(changedValue.split('-')[1], 'rating');
 });
 
-watch(date, () => {
-  if (date.value === 'dateAsc') {
-    sortByDate1to12();
-  } else if (date.value === 'dateDesc') {
-    sortByDate12to1();
-  }
+watch(date, (changedValue) => {
+  sortByNumOrDate(changedValue.split('-')[1], 'appliedDate');
 });
 </script>
 
@@ -67,7 +48,9 @@ watch(date, () => {
   >
     <ArrowsUpDownIcon class="w-5 h-5" />
   </button>
+
   <!-- Dropdown menu -->
+
   <div
     id="sortDropDownMenu"
     class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 w-44"
@@ -82,8 +65,8 @@ watch(date, () => {
           v-model="name"
           class="block w-full px-2 py-1 text-xs text-gray-900 border border-gray-300 rounded-md bg-gray-50 focus:ring-gray-500 focus:border-gray-400"
         >
-          <option value="nameAsc" selected>A &rarr; Z</option>
-          <option value="nameDesc">Z &rarr; A</option>
+          <option value="name-asc" selected>A &rarr; Z</option>
+          <option value="name-desc">Z &rarr; A</option>
         </select>
       </li>
       <li class="flex items-center gap-2">
@@ -92,8 +75,8 @@ watch(date, () => {
           v-model="rating"
           class="block w-full px-2 py-1 text-xs text-gray-900 border border-gray-300 rounded-md bg-gray-50 focus:ring-gray-500 focus:border-gray-400"
         >
-          <option value="ratingAsc" selected>1 &rarr; 9</option>
-          <option value="ratingDesc">9 &rarr; 1</option>
+          <option value="rating-asc" selected>1 &rarr; 9</option>
+          <option value="rating-desc">9 &rarr; 1</option>
         </select>
       </li>
       <li class="flex items-center gap-2">
@@ -102,8 +85,8 @@ watch(date, () => {
           v-model="date"
           class="block w-full px-2 py-1 text-xs text-gray-900 border border-gray-300 rounded-md bg-gray-50 focus:ring-gray-500 focus:border-gray-400"
         >
-          <option value="dateAsc" selected>1 &rarr; 9</option>
-          <option value="dateDesc">9 &rarr; 1</option>
+          <option value="date-asc" selected>1 &rarr; 9</option>
+          <option value="date-desc">9 &rarr; 1</option>
         </select>
       </li>
     </ul>

@@ -104,32 +104,37 @@ export const useTableData = () => {
     return TABLE_DUMMY_DATA;
   });
 
-  const sortByNameAtoZ = () => {
-    DUMMY_DATA.value.sort((a, b) =>
-      a.candidate.name.localeCompare(b.candidate.name)
-    );
+  //  SORTING
+  const sortDataByField = (cb) => {
+    DUMMY_DATA.value.sort(cb);
   };
 
-  const sortByNameZtoA = () => {
-    DUMMY_DATA.value.sort((a, b) =>
-      b.candidate.name.localeCompare(a.candidate.name)
-    );
+  const sortByText = (order, field) => {
+    const [key, nestedKey] = field.split('.');
+
+    switch (order) {
+      case 'asc':
+        sortDataByField((a, b) =>
+          a[key][nestedKey].localeCompare(b[key][nestedKey])
+        );
+        break;
+      case 'desc':
+        sortDataByField((a, b) =>
+          b[key][nestedKey].localeCompare(a[key][nestedKey])
+        );
+        break;
+    }
   };
 
-  const sortByRating1to5 = () => {
-    DUMMY_DATA.value.sort((a, b) => a.rating - b.rating);
-  };
-
-  const sortByRating5to1 = () => {
-    DUMMY_DATA.value.sort((a, b) => b.rating - a.rating);
-  };
-
-  const sortByDate1to12 = () => {
-    DUMMY_DATA.value.sort((a, b) => a.appliedDate - b.appliedDate);
-  };
-
-  const sortByDate12to1 = () => {
-    DUMMY_DATA.value.sort((a, b) => b.appliedDate - a.appliedDate);
+  const sortByNumOrDate = (order, field) => {
+    switch (order) {
+      case 'asc':
+        sortDataByField((a, b) => a[field] - b[field]);
+        break;
+      case 'desc':
+        sortDataByField((a, b) => b[field] - a[field]);
+        break;
+    }
   };
 
   // FILTERING
@@ -248,12 +253,8 @@ export const useTableData = () => {
 
   return {
     DUMMY_DATA,
-    sortByNameAtoZ,
-    sortByNameZtoA,
-    sortByRating1to5,
-    sortByRating5to1,
-    sortByDate1to12,
-    sortByDate12to1,
+    sortByText,
+    sortByNumOrDate,
     filterDataByText,
     filterDataByNum,
     filterDataByDate,
