@@ -26,6 +26,7 @@ onMounted(() => {
   );
 });
 
+const { headers,queryMap } = defineProps(['headers','queryMap'])
 const {
   filterDataByText,
   filterDataByNum,
@@ -33,20 +34,26 @@ const {
   resetFilterFields,
 } = useTableData();
 
-const selectField = ref('text-name');
+const selectField = ref(headers[0].name);
+
+//selected field type computed automatically with selectedFiled
+const selectedFieldType = computed(() => {
+  const currentField = headers.find(item => item.name === selectField.value)
+  return currentField.type
+})
 
 const text = reactive({
-  text: '',
+  value: '',
   op: 'is',
 });
 
 const num = reactive({
-  num: '',
+  value: '',
   op: 'eq',
 });
 
 const date = reactive({
-  date: '',
+  value: '',
   op: 'is',
 });
 
@@ -54,9 +61,9 @@ const resetBtnVisible = ref(false);
 
 watchEffect(() => {
   if (
-    text.text.trim().length !== 0 ||
-    num.num.toString().trim().length !== 0 ||
-    date.date.trim().length !== 0
+    text.value.trim().length !== 0 ||
+    num.value.toString().trim().length !== 0 ||
+    date.value.trim().length !== 0
   ) {
     resetBtnVisible.value = true;
   } else {
@@ -65,47 +72,33 @@ watchEffect(() => {
   }
 });
 
+//value and operations are changed to map to get the value with single line using the selected input type. just like in line no 88 
+const valueAndOperationMap = new Map([
+  ["String", text],
+  ["Number", num],
+  ["Date", date]
+])
+
+//filter Function now can be used as per the selected input data type
+const filterMap = new Map([
+  ['Number', filterDataByNum],
+  ['Date', filterDataByDate],
+  ['String', filterDataByText],
+]);
+
 const filterHandler = () => {
-  const selectedField = selectField.value.split('-')[1];
-  const selectedText = text.text;
-  const selectedTextOp = text.op;
-  const selectedRating = num.num;
-  const selectedRatingOp = num.op;
-  const selectedDate = date.date;
-  const selectedDateOp = date.op;
+  const selectedInput=valueAndOperationMap.get(selectedFieldType.value)
 
-  // const filetMap = new Map([
-  //   ['Number', filterDataByNum],
-  //   ['Date', filterDataByDate],
-  //   ['String', filterDataByText],
-  // ]);
+  //queryMap is coming as props so we need to defined it as per the structure of data in the paraent component
+  const selectedQuery=queryMap.get(selectField.value)
 
-  switch (selectedField) {
-    case 'name':
-      filterDataByText(selectedText, selectedTextOp, 'candidate.name');
-      break;
-    case 'rating':
-      filterDataByNum(selectedRating, selectedRatingOp, 'rating');
-      break;
-    case 'stages':
-      filterDataByText(selectedText, selectedTextOp, 'stages.state');
-      break;
-    case 'team':
-      filterDataByText(selectedText, selectedTextOp, 'team.team');
-      break;
-    case 'date':
-      filterDataByDate(selectedDate, selectedDateOp, 'appliedDate');
-      break;
-    case 'owner':
-      filterDataByText(selectedText, selectedTextOp, 'owner.name');
-      break;
-  }
+  filterMap.get(selectedFieldType.value)(selectedInput.value,selectedInput.op,selectedQuery)
 };
 
 const resetHandler = () => {
-  text.text = '';
-  num.num = '';
-  date.date = '';
+  text.value = '';
+  num.value = '';
+  date.value = '';
   text.op = 'is';
   num.op = 'eq';
   date.op = 'is';
@@ -115,55 +108,34 @@ const resetHandler = () => {
 
 <template>
   <!-- FILTER Dropdown -->
-  <button
-    id="filterDropDownBtn"
-    data-dropdown-toggle="filterDropDownMenu"
-    class="flex items-center gap-1 border bg-white border-gray-300 px-3 py-2.5 text-gray-500 hover:bg-gray-400 hover:text-white rounded-md max-xl:px-4 max-sm:p-2"
-  >
+  <button id="filterDropDownBtn" data-dropdown-toggle="filterDropDownMenu"
+    class="flex items-center gap-1 border bg-white border-gray-300 px-3 py-2.5 text-gray-500 hover:bg-gray-400 hover:text-white rounded-md max-xl:px-4 max-sm:p-2">
     <FunnelIcon class="w-5 h-5" />
   </button>
 
   <!--FILTER Dropdown menu -->
-  <div
-    id="filterDropDownMenu"
-    class="z-10 hidden bg-white divide-y divide-gray-100 max-lg:w-28"
-  >
+  <div id="filterDropDownMenu" class="z-10 hidden bg-white divide-y divide-gray-100 max-lg:w-28">
     <ul
       class="flex items-center gap-1 px-3 py-4 text-sm text-gray-700 rounded-md shadow-md max-lg:flex-col max-lg:items-start"
-      aria-labelledby="filterDropDownBtn"
-    >
+      aria-labelledby="filterDropDownBtn">
       <li class="mr-1 max-lg:hidden">
         <p>Where</p>
       </li>
       <li>
-        <select
-          id="candidate"
-          v-model="selectField"
-          class="bg-gray-50 border border-gray-300 text-gray-800 text-sm focus:ring-green-400 focus:border-transparent rounded-md block w-full px-2 py-1 max-lg:w-full"
-        >
-          <option value="text-name" selected>Name</option>
-          <option value="num-rating">Rating</option>
-          <option value="text-stages">Stages</option>
-          <option value="text-team">Team</option>
-          <option value="date-date">Date</option>
-          <option value="text-owner">Owner</option>
+        <select id="candidate" v-model="selectField"
+          class="block w-full px-2 py-1 text-sm text-gray-800 truncate border border-gray-300 rounded-md bg-gray-50 focus:ring-green-400 focus:border-transparent max-lg:w-full">
+          <option v-for="(header, index) in headers" :key="index" :value="header.name">{{ header.name }}</option>
         </select>
       </li>
       <li>
-        <select
-          v-if="selectField.split('-')[0] === 'text'"
-          v-model="text.op"
-          class="bg-gray-50 border border-gray-300 text-gray-800 text-sm focus:ring-green-400 focus:border-transparent rounded-md block w-full py-1 max-lg:w-full"
-        >
+        <select v-if="selectedFieldType === 'String'" v-model="text.op"
+          class="block w-full py-1 text-sm text-gray-800 border border-gray-300 rounded-md bg-gray-50 focus:ring-green-400 focus:border-transparent max-lg:w-full">
           <option selected value="is">is...</option>
           <option value="is-not">is not...</option>
         </select>
 
-        <select
-          v-if="selectField.split('-')[0] === 'num'"
-          v-model="num.op"
-          class="bg-gray-50 border border-gray-300 text-gray-800 text-sm focus:ring-green-400 focus:border-transparent rounded-md block w-full py-1 max-lg:w-full"
-        >
+        <select v-if="selectedFieldType === 'Number'" v-model="num.op"
+          class="block w-full py-1 text-sm text-gray-800 border border-gray-300 rounded-md bg-gray-50 focus:ring-green-400 focus:border-transparent max-lg:w-full">
           <option selected value="eq">&#x208C;</option>
           <option value="nt-eq">&#x2260;</option>
           <option value="lt">&lt;</option>
@@ -172,11 +144,8 @@ const resetHandler = () => {
           <option value="ge">&ge;</option>
         </select>
 
-        <select
-          v-if="selectField.split('-')[0] === 'date'"
-          v-model="date.op"
-          class="bg-gray-50 border border-gray-300 text-gray-800 text-sm focus:ring-green-400 focus:border-transparent rounded-md block w-full py-1 max-lg:w-full"
-        >
+        <select v-if="selectedFieldType === 'Date'" v-model="date.op"
+          class="block w-full py-1 text-sm text-gray-800 border border-gray-300 rounded-md bg-gray-50 focus:ring-green-400 focus:border-transparent max-lg:w-full">
           <option selected value="is">is...</option>
           <option value="is-before">is before...</option>
           <option value="is-after">is after...</option>
@@ -185,46 +154,28 @@ const resetHandler = () => {
         </select>
       </li>
       <li>
-        <input
-          v-if="selectField.split('-')[0] === 'text'"
-          type="text"
-          v-model="text.text"
-          class="bg-gray-50 border border-gray-300 text-gray-800 text-sm focus:ring-green-400 focus:border-transparent rounded-md block px-2 py-1 w-24 max-lg:w-full"
-          required
-        />
+        <input v-if="selectedFieldType === 'String'" type="text" v-model="text.value"
+          class="block w-24 px-2 py-1 text-sm text-gray-800 border border-gray-300 rounded-md bg-gray-50 focus:ring-green-400 focus:border-transparent max-lg:w-full"
+          required />
 
-        <input
-          v-if="selectField.split('-')[0] === 'num'"
-          type="number"
-          v-model="num.num"
-          class="bg-gray-50 border border-gray-300 text-gray-800 text-sm focus:ring-green-400 focus:border-transparent rounded-md block px-2 py-1 w-24 max-lg:w-full"
-          required
-          max="5"
-          min="1"
-        />
+        <input v-if="selectedFieldType === 'Number'" type="number" v-model="num.value"
+          class="block w-24 px-2 py-1 text-sm text-gray-800 border border-gray-300 rounded-md bg-gray-50 focus:ring-green-400 focus:border-transparent max-lg:w-full"
+          required max="5" min="1" />
 
-        <input
-          v-if="selectField.split('-')[0] === 'date'"
-          type="date"
-          v-model="date.date"
-          class="bg-gray-50 border border-gray-300 text-gray-800 text-sm focus:ring-green-400 focus:border-transparent rounded-md block px-2 py-1 w-24 max-lg:w-full"
-          required
-        />
+        <input v-if="selectedFieldType === 'Date'" type="date" v-model="date.value"
+          class="block w-24 px-2 py-1 text-sm text-gray-800 border border-gray-300 rounded-md bg-gray-50 focus:ring-green-400 focus:border-transparent max-lg:w-full"
+          required />
       </li>
       <li class="max-lg:w-full">
-        <button
-          @click="filterHandler"
-          class="px-2 py-1 bg-gray-100 hover:bg-gray-200 border border-gray-300 hover:border-green-400 rounded-md text-sm text-gray-600 max-lg:w-full max-lg:bg-green-400 max-lg:text-gray-800"
-        >
+        <button @click="filterHandler"
+          class="px-2 py-1 text-sm text-gray-600 bg-gray-100 border border-gray-300 rounded-md hover:bg-gray-200 hover:border-green-400 max-lg:w-full max-lg:bg-green-400 max-lg:text-gray-800">
           Filter
         </button>
       </li>
 
       <li v-if="resetBtnVisible" class="max-lg:w-full">
-        <button
-          @click="resetHandler"
-          class="p-1 bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-md text-sm text-gray-600 max-lg:w-full max-lg:text-gray-800 max-lg:flex max-lg:items-center max-lg:justify-center"
-        >
+        <button @click="resetHandler"
+          class="p-1 text-sm text-gray-600 bg-gray-100 border border-gray-300 rounded-md hover:bg-gray-200 max-lg:w-full max-lg:text-gray-800 max-lg:flex max-lg:items-center max-lg:justify-center">
           <XMarkIcon class="w-5 h-5" />
         </button>
       </li>

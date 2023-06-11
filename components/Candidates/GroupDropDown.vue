@@ -11,7 +11,7 @@
   <!--GROUP Dropdown menu -->
   <div
     id="groupDropDownMenu"
-    class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow px-2 w-28"
+    class="z-10 hidden px-2 bg-white divide-y divide-gray-100 rounded-lg shadow w-28"
   >
     <div
       v-if="grouped.active"
@@ -37,60 +37,18 @@
       class="flex flex-col items-start w-full py-2 text-sm text-gray-700 dark:text-gray-200"
       aria-labelledby="groupDropDownBtn"
     >
-      <li class="w-full">
+      <li class="w-full" v-for="(header,index) in headers" :key="header">
         <button
           type="button"
           @click="
             setGroup({
               active: true,
-              groupedBy: 'Rating',
+              groupedBy: header.name,
             })
           "
-          class="w-full flex items-start py-2 px-2 hover:bg-gray-100 rounded-md"
+          class="flex items-start w-full px-2 py-2 rounded-md hover:bg-gray-100"
         >
-          Rating
-        </button>
-      </li>
-      <li class="w-full">
-        <button
-          type="button"
-          @click="
-            setGroup({
-              active: true,
-              groupedBy: 'Stages',
-            })
-          "
-          class="w-full flex items-start px-2 py-2 hover:bg-gray-100 rounded-md"
-        >
-          Stages
-        </button>
-      </li>
-      <li class="w-full">
-        <button
-          typ="button"
-          @click="
-            setGroup({
-              active: true,
-              groupedBy: 'Team',
-            })
-          "
-          class="w-full flex items-start px-2 py-2 hover:bg-gray-100 rounded-md"
-        >
-          Team
-        </button>
-      </li>
-      <li class="w-full">
-        <button
-          type="button"
-          @click="
-            setGroup({
-              active: true,
-              groupedBy: 'Owner',
-            })
-          "
-          class="w-full flex items-start px-2 py-2 hover:bg-gray-100 rounded-md"
-        >
-          Owner
+          {{ header.name }}
         </button>
       </li>
     </ul>
@@ -106,6 +64,7 @@ import {
 import { Dropdown } from 'flowbite';
 import useGroup from '~/composables/grouping';
 
+const {headers}=defineProps(['headers'])
 const { grouped, setGroup } = useGroup();
 onMounted(() => {
   // set the dropdown menu element

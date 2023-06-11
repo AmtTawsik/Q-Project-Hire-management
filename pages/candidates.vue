@@ -14,15 +14,34 @@ import {
 } from '@heroicons/vue/24/solid';
 
 const { DUMMY_DATA } = useTableData()
+const { getCurrentCandInfo } = useCandidate()
+const detailsHandler = (rowData) => {
+  getCurrentCandInfo(rowData);
+};
 
+const headers = ref([
+  { name: "Name", type: 'String', displayName: 'Candidate Name', draggable: false, sortable: true,primaryKey:true },
+  { name: "Rating", type: 'Number', displayName: 'Rating', draggable: true, sortable: true,primaryKey:false },
+  { name: 'Stages', type: 'String', displayName: 'Stages', draggable: true, sortable: false,primaryKey:false },
+  { name: 'Team', type: 'String', displayName: 'Team', draggable: true, sortable: false,primaryKey:false },
+  { name: 'Date', type: "Date", displayName: 'Applied Date', draggable: true, sortable: true,primaryKey:false },
+  { name: 'Owner', type: 'String', displayName: 'Owner', draggable: true, sortable: false,primaryKey:false }
+]);
 
-const headers = ref([{ name: "Rating", type: 'Number' }, { name: 'Stages', type: 'Object' }, { name: 'Team', type: 'String' }, { name: 'Applied Date', type: "Date" }, { name: 'Owner', type: 'String' }]);
+const queryMap = new Map([
+  ['Name', 'candidate.name'],
+  ['Rating', 'rating'],
+  ['Stages', 'stages.state'],
+  ['Team', 'team.team'],
+  ['Date', 'appliedDate'],
+  ['Owner', 'owner.name'],
+])
 
 const headMap = new Map([
   ['Rating', 'isRatingVisible'],
   ['Stages', 'isStagesVisible'],
   ['Team', 'isTeamVisible'],
-  ['Applied Date', 'isDateVisible'],
+  ['Date', 'isDateVisible'],
   ['Owner', 'isOwnerVisible'],
 ]);
 
@@ -59,10 +78,11 @@ function arrangeByOwner(data) {
 }
 
 const tableRowMap = new Map([
+  ['Name', { property: 'candidate', component: resolveComponent('CandidatesTableDataName'), clickHandler: detailsHandler, id: 'button-open' }],
   ['Rating', { property: 'rating', visilibility: 'isRatingVisible', component: resolveComponent('CandidatesTableDataRating') }],
   ['Stages', { property: 'stages', visilibility: 'isStagesVisible', component: resolveComponent('CandidatesTableDataStages') }],
   ['Team', { property: 'team', visilibility: 'isTeamVisible', component: resolveComponent('CandidatesTableDataTeam') }],
-  ['Applied Date', { property: 'appliedDate', visilibility: 'isDateVisible', component: resolveComponent('CandidatesTableDataDate') }],
+  ['Date', { property: 'appliedDate', visilibility: 'isDateVisible', component: resolveComponent('CandidatesTableDataDate') }],
   ['Owner', { property: 'owner', visilibility: 'isOwnerVisible', component: resolveComponent('CandidatesTableDataOwner') }],
 ])
 
@@ -70,26 +90,18 @@ function changeGroup(list, evt, groupedBy) {
   if (evt.added !== undefined) {
     switch (groupedBy) {
       case 'Rating':
-        console.log('hello1')
-        console.log([...list])
         list[evt.added.newIndex].rating =
           list[(evt.added.newIndex + 1) % list.length].rating;
-          console.log(list)
         break;
       case 'Team':
-        console.log('hello2')
         list[evt.added.newIndex].team.name =
           list[(evt.added.newIndex + 1) % list.length].team.name;
         break;
       case 'Stages':
-        console.log('hello3')
-        console.log(list[evt.added.newIndex].candidate.name)
         list[evt.added.newIndex].stages.state =
           list[(evt.added.newIndex + 1) % list.length].stages.state;
-        console.log(list[evt.added.newIndex].candidate.name)
         break;
       case 'Owner':
-        console.log('hello4')
         list[evt.added.newIndex].owner = {
           ...list[(evt.added.newIndex + 1) % list.length].owner,
         };
@@ -111,15 +123,15 @@ function changeGroup(list, evt, groupedBy) {
           </h3>
 
           <!-- FILTER Dropdown -->
-          <CandidatesFilterDropDown :headers="headers"/>
+          <CandidatesFilterDropDown :headers="[{ name: 'Name', type: 'String' }, ...headers]" :queryMap="queryMap" />
 
           <!-- HIDE Dropdown -->
-          <CandidatesHideDropDown />
+          <CandidatesHideDropDown :headers="headers.filter(item=>!item.primaryKey)" :visiblityMap="headMap"/>
 
           <!-- SORT Dropdown -->
-          <CandidatesSortDropDown />
+          <CandidatesSortDropDown :headers="headers.filter(item => item.sortable)" :queryMap="queryMap" />
 
-          <CandidatesGroupDropDown />
+          <CandidatesGroupDropDown :headers="headers.filter(item=>!item.primaryKey && item.type!=='Date')" />
         </div>
 
         <div class="flex items-center">

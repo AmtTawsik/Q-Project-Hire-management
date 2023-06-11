@@ -147,7 +147,6 @@ export const useTableData = () => {
 
     filterDataByField((item) => {
       let fieldValue = item;
-
       // Traverse the nested keys to access the final value
       for (const key of nestedKeys) {
         if (fieldValue && fieldValue.hasOwnProperty(key)) {

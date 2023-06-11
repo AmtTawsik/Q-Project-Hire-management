@@ -7,17 +7,13 @@ const { data, headers, tableRowMap } = defineProps([
   'tableRowMap',
 ]);
 
-// console.log(data.candidate.name)
 const rowData = {
   ...data,
 };
 
-const { currCandidate, getCurrentCandInfo } = useCandidate();
 const { tableTdVisible } = useHideDropDown();
 
-const detailsHandler = (rowData) => {
-  getCurrentCandInfo(rowData);
-};
+
 </script>
 
 <template>
@@ -31,25 +27,13 @@ const detailsHandler = (rowData) => {
       <label for="checkbox-table-search-1" class="sr-only">checkbox</label>
     </div>
   </td>
-  <td
-    id="button-open"
-    @click="detailsHandler(rowData)"
-    scope="row"
-    class="flex items-center px-3 py-5 text-gray-900 w-[170px] truncate"
-  >
-    <img
-      class="w-10 h-10 rounded-full"
-      :src="rowData.candidate.image"
-      alt="Jese image"
-    />
-
-    <p class="pl-3 truncate">{{ rowData.candidate.name }}</p>
-  </td>
   <template v-for="(header, i) in headers" :key="i">
-    <td v-if="tableTdVisible[tableRowMap.get(header.name).visilibility]">
+    <td v-if="tableRowMap.get(header.name).visilibility===undefined?true:tableTdVisible[tableRowMap.get(header.name).visilibility]">
       <component
         :is="tableRowMap.get(header.name)?.component"
         :content="rowData[tableRowMap.get(header.name).property]"
+        @click="tableRowMap.get(header.name)?.clickHandler!==undefined?tableRowMap.get(header.name).clickHandler(rowData):''"
+        :id="tableRowMap.get(header.name)?.id"
       >
       </component>
     </td>
