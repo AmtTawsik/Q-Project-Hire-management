@@ -1,7 +1,7 @@
 <template>
   <div class="px-3 py-4">
     <p class="text-black truncate">{{ content.self }}</p>
-    <p class="text-sm">{{ content.name }}</p>
+    <p class="text-sm">{{ content.team }}</p>
   </div>
 </template>
 

@@ -12,8 +12,6 @@ const rowData = {
 };
 
 const { tableTdVisible } = useHideDropDown();
-
-
 </script>
 
 <template>

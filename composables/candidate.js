@@ -20,7 +20,7 @@ export const useTableData = () => {
       },
       team: {
         self: 'Junior UI Designer',
-        name: 'Design Team',
+        team: 'Design Team',
       },
 
       appliedDate: new Date('2022-02-15'),
@@ -28,6 +28,7 @@ export const useTableData = () => {
         name: 'Kristin Watson',
         image: p2,
       },
+      age:24
     },
     {
       id: 2,
@@ -43,7 +44,7 @@ export const useTableData = () => {
       },
       team: {
         self: 'Junior UX Designer',
-        name: 'Design Team',
+        team: 'Design Team',
       },
 
       appliedDate: new Date('2023-01-12'),
@@ -51,6 +52,7 @@ export const useTableData = () => {
         name: 'Albert Flores',
         image: p4,
       },
+      age:32
     },
     {
       id: 3,
@@ -66,7 +68,7 @@ export const useTableData = () => {
       },
       team: {
         self: 'UX Researcher',
-        name: 'Design Team',
+        team: 'Design Team',
       },
 
       appliedDate: new Date('2022-12-15'),
@@ -74,6 +76,7 @@ export const useTableData = () => {
         name: 'Dianne Russell',
         image: p5,
       },
+      age:19
     },
     {
       id: 4,
@@ -89,7 +92,7 @@ export const useTableData = () => {
       },
       team: {
         self: 'UX Researcher',
-        name: 'Developer Team',
+        team: 'Developer Team',
       },
 
       appliedDate: new Date('2023-02-15'),
@@ -97,6 +100,7 @@ export const useTableData = () => {
         name: 'Kristin Watson',
         image: p2,
       },
+      age:18
     },
   ];
 
@@ -279,6 +283,7 @@ export const useHideDropDown = () => {
       isTeamVisible: true,
       isDateVisible: true,
       isOwnerVisible: true,
+      isAgeVisible:true
     };
 
     return isVisible;

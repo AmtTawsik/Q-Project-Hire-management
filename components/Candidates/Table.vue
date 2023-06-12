@@ -4,13 +4,12 @@ import draggable from 'vuedraggable';
 import { Drawer } from 'flowbite';
 import useGroup from '~/composables/grouping';
 
-const { TABLE_DATA, headers, groupMap, headMap, changeGroup, tableRowMap } = defineProps(['TABLE_DATA', 'headers', 'groupMap', 'headMap', 'changeGroup', 'tableRowMap'])
+const { TABLE_DATA, headers, queryMap, tableRowMap,groupMap } = defineProps(['TABLE_DATA', 'headers', 'queryMap', 'tableRowMap' , 'groupMap'])
 
 const { grouped } = useGroup();
 const { tableTdVisible } = useHideDropDown();
-
-const draggable_local_headers = ref(headers.filter(item => item.draggable))
-const non_draggable_local_headers = ref(headers.filter(item => !item.draggable))
+const draggable_local_headers = ref(headers.filter(item => !item.primaryKey))
+const non_draggable_local_headers = ref(headers.filter(item => item.primaryKey))
 const local_headers = computed(() => {
   return [...non_draggable_local_headers.value, ...draggable_local_headers.value]
 })
@@ -19,8 +18,49 @@ const byGrouped = computed(() => {
   if (!grouped?.value.active) {
     return [];
   }
-  return groupMap.get(grouped.value.groupedBy)(TABLE_DATA);
+  return arrangeByProperty(TABLE_DATA, queryMap.get(grouped?.value.groupedBy));
 });
+
+//an universal grouping function whichs groups data depending on the queryString ,[ queryString ex. - 'team.team' , 'stages.state' . queryString is normally that string which we use to access the value in nested objects]
+function arrangeByProperty(data, queryString) {
+  const keys = queryString.split('.')
+  return data.reduce((acc, user) => {
+    let fieldValue = user
+    for (const key of keys) {
+      if (fieldValue && fieldValue.hasOwnProperty(key)) {
+        fieldValue = fieldValue[key]
+      }
+      else {
+        fieldValue = undefined
+        break
+      }
+    }
+    (acc[fieldValue] ||= []).push(user);
+    return acc;
+  }, {});
+}
+
+
+//this change group function which takes the queryString which is coming from groupMap and change the grouping property with as same as its sibling elements
+function changeGroup(list, evt, queryString) {
+  if (evt.added !== undefined) {
+    const keys = queryString.split('.')
+    const lastKey=keys.at(-1)
+    const nestedkeys=keys.slice(0,keys.length-1)
+    let currentElement = list[evt.added.newIndex]
+    let nextElement = list[(evt.added.newIndex + 1) % list.length]
+    for (const key of nestedkeys) {
+      if (currentElement && currentElement.hasOwnProperty(key)) {
+        currentElement = currentElement[key];
+        nextElement = nextElement[key];
+      } else {
+        currentElement = undefined;
+        break;
+      }
+    }
+    currentElement[lastKey]=nextElement[lastKey]
+  }
+}
 
 onMounted(() => {
   // setup available elements
@@ -49,6 +89,7 @@ onMounted(() => {
     });
   }
 });
+
 </script>
 <template>
   <CandidatesDetails />
@@ -73,7 +114,9 @@ onMounted(() => {
             </th>
           </template>
           <template #item="{ element: header }">
-            <th v-if="tableTdVisible[headMap.get(header.name)]" scope="col" class="px-3 py-3 cursor-pointer">
+            <th
+              v-if="tableRowMap.get(header.name).visilibility === undefined ? true : tableTdVisible[tableRowMap.get(header.name).visilibility]"
+              scope="col" class="px-3 py-3 cursor-pointer">
               <div class="flex items-center gap-1">
                 <span>{{ header.displayName }}</span>
                 <ChevronUpDownIcon class="w-4 h-4" />
@@ -106,7 +149,9 @@ onMounted(() => {
               </th>
             </template>
             <template #item="{ element: header }">
-              <th v-if="tableTdVisible[headMap.get(header.name)]" scope="col" class="px-3 py-3">
+              <th
+                v-if="tableRowMap.get(header.name).visilibility === undefined ? true : tableTdVisible[tableRowMap.get(header.name).visilibility]"
+                scope="col" class="px-3 py-3">
                 <div class="flex items-center gap-1">
                   <span>{{ header.displayName }}</span>
                   <ChevronUpDownIcon class="w-4 h-4" />
@@ -137,7 +182,7 @@ onMounted(() => {
             </td>
           </tr>
           <draggable :list="candidates" :group="{ name: 'candidates', pull: true, put: true }" itemKey="grouped" tag="tr"
-            @change="changeGroup(candidates, $event, grouped.groupedBy)">
+            @change="changeGroup(candidates, $event, groupMap.get(grouped.groupedBy))">
             <template #item="{ element: data, index }">
               <tr class="text-base border-b cursor-grab bg-gray-50 max-xl:text-sm">
                 <CandidatesTableRow :key="data.id" :data="data" :tableRowMap="tableRowMap" :headers="local_headers" />
@@ -147,5 +192,4 @@ onMounted(() => {
         </template>
       </tbody>
     </table>
-  </div>
-</template>
+</div></template>
