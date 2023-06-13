@@ -39,14 +39,6 @@ const queryMap = new Map([
     ['Age', 'age'],
 ])
 
-const headMap = new Map([
-    ['Rating', 'isRatingVisible'],
-    ['Stages', 'isStagesVisible'],
-    ['Team', 'isTeamVisible'],
-    ['Date', 'isDateVisible'],
-    ['Owner', 'isOwnerVisible'],
-    ['Age','isAgeVisible']
-]);
 
 const groupMap = new Map([
   ['Rating', 'rating'],
