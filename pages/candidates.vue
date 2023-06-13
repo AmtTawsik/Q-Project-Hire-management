@@ -20,12 +20,12 @@ const detailsHandler = (rowData) => {
 };
 
 const headers = ref([
-  { name: "Name", type: 'String', displayName: 'Candidate Name', draggable: false, sortable: true,primaryKey:true },
-  { name: "Rating", type: 'Number', displayName: 'Rating', draggable: true, sortable: true,primaryKey:false },
-  { name: 'Stages', type: 'String', displayName: 'Stages', draggable: true, sortable: false,primaryKey:false },
-  { name: 'Team', type: 'String', displayName: 'Team', draggable: true, sortable: false,primaryKey:false },
-  { name: 'Date', type: "Date", displayName: 'Applied Date', draggable: true, sortable: true,primaryKey:false },
-  { name: 'Owner', type: 'String', displayName: 'Owner', draggable: true, sortable: false,primaryKey:false }
+  { name: "Name", type: 'String', displayName: 'Candidate Name', sortable: true, primaryKey: true },
+  { name: "Rating", type: 'Number', displayName: 'Rating', sortable: true, primaryKey: false },
+  { name: 'Stages', type: 'String', displayName: 'Stages', sortable: false, primaryKey: false },
+  { name: 'Team', type: 'String', displayName: 'Team', sortable: false, primaryKey: false },
+  { name: 'Date', type: "Date", displayName: 'Applied Date', sortable: true, primaryKey: false },
+  { name: 'Owner', type: 'String', displayName: 'Owner', sortable: false, primaryKey: false }
 ]);
 
 const queryMap = new Map([
@@ -37,80 +37,21 @@ const queryMap = new Map([
   ['Owner', 'owner.name'],
 ])
 
-const headMap = new Map([
-  ['Rating', 'isRatingVisible'],
-  ['Stages', 'isStagesVisible'],
-  ['Team', 'isTeamVisible'],
-  ['Date', 'isDateVisible'],
-  ['Owner', 'isOwnerVisible'],
-]);
-
 const groupMap = new Map([
-  ['Rating', arrangeByRating],
-  ['Stages', arrangeByStages],
-  ['Team', arrangeByTeam],
-  ['Owner', arrangeByOwner],
-]);
-
-function arrangeByRating(data) {
-  return data.reduce((acc, user) => {
-    (acc[user.rating] ||= []).push(user);
-    return acc;
-  }, {});
-}
-function arrangeByStages(data) {
-  return data.reduce((acc, user) => {
-    (acc[user.stages.state] ||= []).push(user);
-    return acc;
-  }, {});
-}
-function arrangeByTeam(data) {
-  return data.reduce((acc, user) => {
-    (acc[user.team.name] ||= []).push(user);
-    return acc;
-  }, {});
-}
-function arrangeByOwner(data) {
-  return data.reduce((acc, user) => {
-    (acc[user.owner.name] ||= []).push(user);
-    return acc;
-  }, {});
-}
+  ['Rating', 'rating'],
+  ['Stages', 'stages.state'],
+  ['Team', 'team.team'],
+  ['Owner', 'owner'],
+])
 
 const tableRowMap = new Map([
   ['Name', { property: 'candidate', component: resolveComponent('CandidatesTableDataName'), clickHandler: detailsHandler, id: 'button-open' }],
-  ['Rating', { property: 'rating', visilibility: 'isRatingVisible', component: resolveComponent('CandidatesTableDataRating') }],
-  ['Stages', { property: 'stages', visilibility: 'isStagesVisible', component: resolveComponent('CandidatesTableDataStages') }],
-  ['Team', { property: 'team', visilibility: 'isTeamVisible', component: resolveComponent('CandidatesTableDataTeam') }],
-  ['Date', { property: 'appliedDate', visilibility: 'isDateVisible', component: resolveComponent('CandidatesTableDataDate') }],
-  ['Owner', { property: 'owner', visilibility: 'isOwnerVisible', component: resolveComponent('CandidatesTableDataOwner') }],
+  ['Rating', { property: 'rating', visibility: 'isRatingVisible', component: resolveComponent('CandidatesTableDataRating') }],
+  ['Stages', { property: 'stages', visibility: 'isStagesVisible', component: resolveComponent('CandidatesTableDataStages') }],
+  ['Team', { property: 'team', visibility: 'isTeamVisible', component: resolveComponent('CandidatesTableDataTeam') }],
+  ['Date', { property: 'appliedDate', visibility: 'isDateVisible', component: resolveComponent('CandidatesTableDataDate') }],
+  ['Owner', { property: 'owner', visibility: 'isOwnerVisible', component: resolveComponent('CandidatesTableDataOwner') }],
 ])
-
-function changeGroup(list, evt, groupedBy) {
-  if (evt.added !== undefined) {
-    switch (groupedBy) {
-      case 'Rating':
-        list[evt.added.newIndex].rating =
-          list[(evt.added.newIndex + 1) % list.length].rating;
-        break;
-      case 'Team':
-        list[evt.added.newIndex].team.name =
-          list[(evt.added.newIndex + 1) % list.length].team.name;
-        break;
-      case 'Stages':
-        list[evt.added.newIndex].stages.state =
-          list[(evt.added.newIndex + 1) % list.length].stages.state;
-        break;
-      case 'Owner':
-        list[evt.added.newIndex].owner = {
-          ...list[(evt.added.newIndex + 1) % list.length].owner,
-        };
-        break;
-      default:
-        break;
-    }
-  }
-}
 </script>
 
 <template>
@@ -123,15 +64,15 @@ function changeGroup(list, evt, groupedBy) {
           </h3>
 
           <!-- FILTER Dropdown -->
-          <CandidatesFilterDropDown :headers="[{ name: 'Name', type: 'String' }, ...headers]" :queryMap="queryMap" />
+          <CandidatesFilterDropDown :headers="[...headers]" :queryMap="queryMap" />
 
           <!-- HIDE Dropdown -->
-          <CandidatesHideDropDown :headers="headers.filter(item=>!item.primaryKey)" :visiblityMap="headMap"/>
+          <CandidatesHideDropDown :headers="headers.filter(item => !item.primaryKey)" :visiblityMap="tableRowMap" />
 
           <!-- SORT Dropdown -->
           <CandidatesSortDropDown :headers="headers.filter(item => item.sortable)" :queryMap="queryMap" />
 
-          <CandidatesGroupDropDown :headers="headers.filter(item=>!item.primaryKey && item.type!=='Date')" />
+          <CandidatesGroupDropDown :headers="headers.filter(item => !item.primaryKey && item.type !== 'Date')" />
         </div>
 
         <div class="flex items-center">
@@ -161,8 +102,7 @@ function changeGroup(list, evt, groupedBy) {
       </div>
     </header>
 
-    <CandidatesTable :TABLE_DATA="DUMMY_DATA" :headers="headers" :groupMap="groupMap" :headMap="headMap"
-      :changeGroup="changeGroup" :tableRowMap="tableRowMap" />
+    <CandidatesTable :TABLE_DATA="DUMMY_DATA" :headers="headers" :queryMap="queryMap" :tableRowMap="tableRowMap" :groupMap="groupMap" />
 
     <footer class="flex items-center justify-between py-3 mt-auto mb-2">
       <div class="flex items-center gap-4">
