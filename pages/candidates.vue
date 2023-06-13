@@ -46,11 +46,11 @@ const groupMap = new Map([
 
 const tableRowMap = new Map([
   ['Name', { property: 'candidate', component: resolveComponent('CandidatesTableDataName'), clickHandler: detailsHandler, id: 'button-open' }],
-  ['Rating', { property: 'rating', visilibility: 'isRatingVisible', component: resolveComponent('CandidatesTableDataRating') }],
-  ['Stages', { property: 'stages', visilibility: 'isStagesVisible', component: resolveComponent('CandidatesTableDataStages') }],
-  ['Team', { property: 'team', visilibility: 'isTeamVisible', component: resolveComponent('CandidatesTableDataTeam') }],
-  ['Date', { property: 'appliedDate', visilibility: 'isDateVisible', component: resolveComponent('CandidatesTableDataDate') }],
-  ['Owner', { property: 'owner', visilibility: 'isOwnerVisible', component: resolveComponent('CandidatesTableDataOwner') }],
+  ['Rating', { property: 'rating', visibility: 'isRatingVisible', component: resolveComponent('CandidatesTableDataRating') }],
+  ['Stages', { property: 'stages', visibility: 'isStagesVisible', component: resolveComponent('CandidatesTableDataStages') }],
+  ['Team', { property: 'team', visibility: 'isTeamVisible', component: resolveComponent('CandidatesTableDataTeam') }],
+  ['Date', { property: 'appliedDate', visibility: 'isDateVisible', component: resolveComponent('CandidatesTableDataDate') }],
+  ['Owner', { property: 'owner', visibility: 'isOwnerVisible', component: resolveComponent('CandidatesTableDataOwner') }],
 ])
 </script>
 
@@ -67,7 +67,7 @@ const tableRowMap = new Map([
           <CandidatesFilterDropDown :headers="[...headers]" :queryMap="queryMap" />
 
           <!-- HIDE Dropdown -->
-          <CandidatesHideDropDown :headers="headers.filter(item => !item.primaryKey)" :visiblityMap="headMap" />
+          <CandidatesHideDropDown :headers="headers.filter(item => !item.primaryKey)" :visiblityMap="tableRowMap" />
 
           <!-- SORT Dropdown -->
           <CandidatesSortDropDown :headers="headers.filter(item => item.sortable)" :queryMap="queryMap" />
@@ -102,7 +102,7 @@ const tableRowMap = new Map([
       </div>
     </header>
 
-    <CandidatesTable :TABLE_DATA="DUMMY_DATA" :headers="headers" :queryMap="queryMap" :headMap="headMap" :tableRowMap="tableRowMap" :groupMap="groupMap" />
+    <CandidatesTable :TABLE_DATA="DUMMY_DATA" :headers="headers" :queryMap="queryMap" :tableRowMap="tableRowMap" :groupMap="groupMap" />
 
     <footer class="flex items-center justify-between py-3 mt-auto mb-2">
       <div class="flex items-center gap-4">

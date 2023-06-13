@@ -115,7 +115,7 @@ onMounted(() => {
           </template>
           <template #item="{ element: header }">
             <th
-              v-if="tableRowMap.get(header.name).visilibility === undefined ? true : tableTdVisible[tableRowMap.get(header.name).visilibility]"
+              v-if="tableRowMap.get(header.name).visibility === undefined ? true : tableTdVisible[tableRowMap.get(header.name).visibility]"
               scope="col" class="px-3 py-3 cursor-pointer">
               <div class="flex items-center gap-1">
                 <span>{{ header.displayName }}</span>
@@ -150,7 +150,7 @@ onMounted(() => {
             </template>
             <template #item="{ element: header }">
               <th
-                v-if="tableRowMap.get(header.name).visilibility === undefined ? true : tableTdVisible[tableRowMap.get(header.name).visilibility]"
+                v-if="tableRowMap.get(header.name).visibility === undefined ? true : tableTdVisible[tableRowMap.get(header.name).visibility]"
                 scope="col" class="px-3 py-3">
                 <div class="flex items-center gap-1">
                   <span>{{ header.displayName }}</span>

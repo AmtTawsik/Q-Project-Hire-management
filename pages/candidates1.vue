@@ -49,84 +49,24 @@ const headMap = new Map([
 ]);
 
 const groupMap = new Map([
-    ['Rating', arrangeByRating],
-    ['Stages', arrangeByStages],
-    ['Team', arrangeByTeam],
-    ['Owner', arrangeByOwner],
-]);
+  ['Rating', 'rating'],
+  ['Stages', 'stages.state'],
+  ['Team', 'team.team'],
+  ['Owner', 'owner'],
+  ['Age', 'age'],
+])
 
-function arrangeByRating(data) {
-    return data.reduce((acc, user) => {
-
-        (acc[user.rating] ||= []).push(user);
-        return acc;
-    }, {});
-}
-function arrangeByStages(data,queryString) {
-    const keys=queryString.split('.')
-    return data.reduce((acc, user) => {
-        const fieldValue=user
-        for(const key in keys){
-            if(fieldValue && fieldValue.hasOwnProperty(key)){
-                fieldValue=fieldValue[key]
-            }
-            else{
-                fieldValue=undefined
-                break
-            }
-        }
-        (acc[fieldValue] ||= []).push(user);
-        return acc;
-    }, {});
-}
-function arrangeByTeam(data) {
-    return data.reduce((acc, user) => {
-        (acc[user.team.name] ||= []).push(user);
-        return acc;
-    }, {});
-}
-function arrangeByOwner(data) {
-    return data.reduce((acc, user) => {
-        (acc[user.owner.name] ||= []).push(user);
-        return acc;
-    }, {});
-}
 
 const tableRowMap = new Map([
     ['Name', { property: 'candidate', component: resolveComponent('CandidatesTableDataName'), clickHandler: detailsHandler, id: 'button-open' }],
-    ['Rating', { property: 'rating', visilibility: 'isRatingVisible', component: resolveComponent('CandidatesTableDataRating') }],
-    ['Stages', { property: 'stages', visilibility: 'isStagesVisible', component: resolveComponent('CandidatesTableDataStages') }],
-    ['Team', { property: 'team', visilibility: 'isTeamVisible', component: resolveComponent('CandidatesTableDataTeam') }],
-    ['Date', { property: 'appliedDate', visilibility: 'isDateVisible', component: resolveComponent('CandidatesTableDataDate') }],
-    ['Owner', { property: 'owner', visilibility: 'isOwnerVisible', component: resolveComponent('CandidatesTableDataOwner') }],
-    ['Age', { property: 'age',visilibility:'isAgeVisible', component: resolveComponent('CandidatesTableDataAge') }]
+    ['Rating', { property: 'rating', visibility: 'isRatingVisible', component: resolveComponent('CandidatesTableDataRating') }],
+    ['Stages', { property: 'stages', visibility: 'isStagesVisible', component: resolveComponent('CandidatesTableDataStages') }],
+    ['Team', { property: 'team', visibility: 'isTeamVisible', component: resolveComponent('CandidatesTableDataTeam') }],
+    ['Date', { property: 'appliedDate', visibility: 'isDateVisible', component: resolveComponent('CandidatesTableDataDate') }],
+    ['Owner', { property: 'owner', visibility: 'isOwnerVisible', component: resolveComponent('CandidatesTableDataOwner') }],
+    ['Age', { property: 'age',visibility:'isAgeVisible', component: resolveComponent('CandidatesTableDataAge') }]
 ])
 
-function changeGroup(list, evt, groupedBy) {
-    if (evt.added !== undefined) {
-        switch (groupedBy) {
-            case 'Rating':
-                list[evt.added.newIndex].rating =
-                    list[(evt.added.newIndex + 1) % list.length].rating;
-                break;
-            case 'Team':
-                list[evt.added.newIndex].team.name =
-                    list[(evt.added.newIndex + 1) % list.length].team.name;
-                break;
-            case 'Stages':
-                list[evt.added.newIndex].stages.state =
-                    list[(evt.added.newIndex + 1) % list.length].stages.state;
-                break;
-            case 'Owner':
-                list[evt.added.newIndex].owner = {
-                    ...list[(evt.added.newIndex + 1) % list.length].owner,
-                };
-                break;
-            default:
-                break;
-        }
-    }
-}
 </script>
 
 <template>
@@ -142,7 +82,7 @@ function changeGroup(list, evt, groupedBy) {
                     <CandidatesFilterDropDown :headers="[...headers]" :queryMap="queryMap" />
 
                     <!-- HIDE Dropdown -->
-                    <CandidatesHideDropDown :headers="headers.filter(item => !item.primaryKey)" :visiblityMap="headMap" />
+                    <CandidatesHideDropDown :headers="headers.filter(item => !item.primaryKey)" :visiblityMap="tableRowMap" />
 
                     <!-- SORT Dropdown -->
                     <CandidatesSortDropDown :headers="headers.filter(item => item.sortable)" :queryMap="queryMap" />
@@ -177,8 +117,7 @@ function changeGroup(list, evt, groupedBy) {
             </div>
         </header>
 
-        <CandidatesTable :TABLE_DATA="DUMMY_DATA" :headers="headers" :queryMap="queryMap" :headMap="headMap"
-            :changeGroup="changeGroup" :tableRowMap="tableRowMap" />
+        <CandidatesTable :TABLE_DATA="DUMMY_DATA" :headers="headers" :queryMap="queryMap"  :groupMap="groupMap" :tableRowMap="tableRowMap" />
 
         <footer class="flex items-center justify-between py-3 mt-auto mb-2">
             <div class="flex items-center gap-4">
