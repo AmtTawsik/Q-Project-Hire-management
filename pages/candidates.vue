@@ -102,7 +102,7 @@ const tableRowMap = new Map([
       </div>
     </header>
 
-    <CandidatesTable :TABLE_DATA="DUMMY_DATA" :headers="headers" :queryMap="queryMap" :headMap="headMap" :tableRowMap="tableRowMap" :groupMap="groupMap" />
+    <CandidatesTable :TABLE_DATA="DUMMY_DATA" :headers="headers" :queryMap="queryMap" :tableRowMap="tableRowMap" :groupMap="groupMap" />
 
     <footer class="flex items-center justify-between py-3 mt-auto mb-2">
       <div class="flex items-center gap-4">
