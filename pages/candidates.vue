@@ -43,15 +43,6 @@ const groupMap = new Map([
   ['Team', 'team.team'],
   ['Owner', 'owner'],
 ])
- 
-const headMap = new Map([
-  ['Rating', 'isRatingVisible'],
-  ['Stages', 'isStagesVisible'],
-  ['Team', 'isTeamVisible'],
-  ['Date', 'isDateVisible'],
-  ['Owner', 'isOwnerVisible'],
-  ['Age', 'isAgeVisible'],
-]);
 
 const tableRowMap = new Map([
   ['Name', { property: 'candidate', component: resolveComponent('CandidatesTableDataName'), clickHandler: detailsHandler, id: 'button-open' }],
