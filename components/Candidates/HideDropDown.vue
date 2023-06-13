@@ -52,7 +52,7 @@ onMounted(() => {
           >
             <input
               type="checkbox"
-              v-model="tableTdVisible[visiblityMap.get(header.name)]"
+              v-model="tableTdVisible[visiblityMap.get(header.name).visibility]"
               class="sr-only peer"
             />
             <div

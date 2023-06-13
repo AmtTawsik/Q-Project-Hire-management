@@ -26,7 +26,7 @@ const { tableTdVisible } = useHideDropDown();
     </div>
   </td>
   <template v-for="(header, i) in headers" :key="i">
-    <td v-if="tableRowMap.get(header.name).visilibility===undefined?true:tableTdVisible[tableRowMap.get(header.name).visilibility]">
+    <td v-if="tableRowMap.get(header.name).visibility===undefined?true:tableTdVisible[tableRowMap.get(header.name).visibility]">
       <component
         :is="tableRowMap.get(header.name)?.component"
         :content="rowData[tableRowMap.get(header.name).property]"

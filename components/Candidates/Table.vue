@@ -144,6 +144,9 @@ onMounted(() => {
               scope="col"
               class="px-3 py-3 cursor-pointer"
             >
+              v-if="tableRowMap.get(header.name).visibility === undefined ? true
+              : tableTdVisible[tableRowMap.get(header.name).visibility]"
+              scope="col" class="px-3 py-3 cursor-pointer">
               <div class="flex items-center gap-1">
                 <span>{{ header.displayName }}</span>
                 <ChevronUpDownIcon class="w-4 h-4" />
