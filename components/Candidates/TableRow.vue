@@ -31,7 +31,6 @@ const { tableTdVisible } = useHideDropDown();
         :is="tableRowMap.get(header.name)?.component"
         :content="rowData[tableRowMap.get(header.name).property]"
         @click="tableRowMap.get(header.name)?.clickHandler!==undefined?tableRowMap.get(header.name).clickHandler(rowData):''"
-        :id="tableRowMap.get(header.name)?.id"
       >
       </component>
     </td>

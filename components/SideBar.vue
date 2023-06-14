@@ -98,6 +98,13 @@ const rootFunction =() =>{
             <span class="ml-3">Candidates</span>
           </NuxtLink>
         </li>
+        <li>
+          <NuxtLink id="closeButton" class="flex items-center p-2 text-white rounded-lg hover:bg-gray-700"
+            to="/kanban">
+            <UsersIcon class="w-6 h-6 text-gray-500 transition duration-75" />
+            <span class="ml-3">Candidates2</span>
+          </NuxtLink>
+        </li>
 
         <li>
           <NuxtLink id="closeButton" class="flex items-center p-2 text-white rounded-lg hover:bg-gray-700">
