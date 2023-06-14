@@ -15,9 +15,14 @@ import {
 
 const { DUMMY_DATA } = useTableData()
 const { getCurrentCandInfo } = useCandidate()
+const drawer=useState('drawer')
+
+
 const detailsHandler = (rowData) => {
   getCurrentCandInfo(rowData);
+  drawer.value.toggle()
 };
+
 
 const headers = ref([
   { name: "Name", type: 'String', displayName: 'Candidate Name', sortable: true, primaryKey: true },
@@ -45,7 +50,7 @@ const groupMap = new Map([
 ])
 
 const tableRowMap = new Map([
-  ['Name', { property: 'candidate', component: resolveComponent('CandidatesTableDataName'), clickHandler: detailsHandler, id: 'button-open' }],
+  ['Name', { property: 'candidate', component: resolveComponent('CandidatesTableDataName'), clickHandler: detailsHandler}],
   ['Rating', { property: 'rating', visibility: 'isRatingVisible', component: resolveComponent('CandidatesTableDataRating') }],
   ['Stages', { property: 'stages', visibility: 'isStagesVisible', component: resolveComponent('CandidatesTableDataStages') }],
   ['Team', { property: 'team', visibility: 'isTeamVisible', component: resolveComponent('CandidatesTableDataTeam') }],

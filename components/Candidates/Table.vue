@@ -70,34 +70,6 @@ function changeGroup(list, evt, queryString) {
     currentElement[lastKey] = nextElement[lastKey];
   }
 }
-
-onMounted(() => {
-  // setup available elements
-  const $buttonElement = document.querySelectorAll('#button-open');
-  const $drawerElement = document.querySelector('#drawer-right');
-  const $closeButton = document.querySelector('#close-button');
-
-  // set modal options
-
-  const drawerOptions = {
-    placement: 'right',
-    backdrop: true,
-    bodyScrolling: false,
-    edge: false,
-    edgeOffset: '',
-    backdropClasses:
-      'bg-gray-900 bg-opacity-50 dark:bg-opacity-80 fixed inset-0 z-30',
-  };
-
-  // create a new modal instance
-  if ($drawerElement) {
-    const drawer = new Drawer($drawerElement, drawerOptions);
-
-    $buttonElement.forEach((el) => {
-      el.addEventListener('click', () => drawer.toggle());
-    });
-  }
-});
 </script>
 <template>
   <SideDrawer />
@@ -144,9 +116,6 @@ onMounted(() => {
               scope="col"
               class="px-3 py-3 cursor-pointer"
             >
-              v-if="tableRowMap.get(header.name).visibility === undefined ? true
-              : tableTdVisible[tableRowMap.get(header.name).visibility]"
-              scope="col" class="px-3 py-3 cursor-pointer">
               <div class="flex items-center gap-1">
                 <span>{{ header.displayName }}</span>
                 <ChevronUpDownIcon class="w-4 h-4" />

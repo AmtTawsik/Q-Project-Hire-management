@@ -1,5 +1,5 @@
 <template>
-    <div class="p-2 bg-gray-100 rounded-md">
+    <div class="p-2 bg-gray-100 rounded-md" id="button-open">
         <div class="flex items-center gap-2 pb-2 border-b border-b-gray-200">
             <img class="w-10 h-10 rounded-full" :src="content.candidate.image" alt="cand-img" />
             <p class="font-semibold capitalize">{{ content.candidate.name }}</p>

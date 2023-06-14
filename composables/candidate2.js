@@ -102,7 +102,7 @@ export function useCandidateData(){
           days:1
         },
       ];
-    const candidateData=useState('candidate',()=>candidateRawData)
+    const candidateData=useState('candidate2',()=>candidateRawData)
 
     return {candidateData}
 }
